@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as ServicesRouteImport } from './routes/services'
+import { Route as ProvidersRouteImport } from './routes/providers'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ServiceIdRouteImport } from './routes/service.$id'
 import { Route as ProviderIdRouteImport } from './routes/provider.$id'
@@ -17,6 +18,11 @@ import { Route as ProviderIdRouteImport } from './routes/provider.$id'
 const ServicesRoute = ServicesRouteImport.update({
   id: '/services',
   path: '/services',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProvidersRoute = ProvidersRouteImport.update({
+  id: '/providers',
+  path: '/providers',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -37,12 +43,14 @@ const ProviderIdRoute = ProviderIdRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/providers': typeof ProvidersRoute
   '/services': typeof ServicesRoute
   '/provider/$id': typeof ProviderIdRoute
   '/service/$id': typeof ServiceIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/providers': typeof ProvidersRoute
   '/services': typeof ServicesRoute
   '/provider/$id': typeof ProviderIdRoute
   '/service/$id': typeof ServiceIdRoute
@@ -50,20 +58,28 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/providers': typeof ProvidersRoute
   '/services': typeof ServicesRoute
   '/provider/$id': typeof ProviderIdRoute
   '/service/$id': typeof ServiceIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/services' | '/provider/$id' | '/service/$id'
+  fullPaths: '/' | '/providers' | '/services' | '/provider/$id' | '/service/$id'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/services' | '/provider/$id' | '/service/$id'
-  id: '__root__' | '/' | '/services' | '/provider/$id' | '/service/$id'
+  to: '/' | '/providers' | '/services' | '/provider/$id' | '/service/$id'
+  id:
+    | '__root__'
+    | '/'
+    | '/providers'
+    | '/services'
+    | '/provider/$id'
+    | '/service/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ProvidersRoute: typeof ProvidersRoute
   ServicesRoute: typeof ServicesRoute
   ProviderIdRoute: typeof ProviderIdRoute
   ServiceIdRoute: typeof ServiceIdRoute
@@ -76,6 +92,13 @@ declare module '@tanstack/react-router' {
       path: '/services'
       fullPath: '/services'
       preLoaderRoute: typeof ServicesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/providers': {
+      id: '/providers'
+      path: '/providers'
+      fullPath: '/providers'
+      preLoaderRoute: typeof ProvidersRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -104,6 +127,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ProvidersRoute: ProvidersRoute,
   ServicesRoute: ServicesRoute,
   ProviderIdRoute: ProviderIdRoute,
   ServiceIdRoute: ServiceIdRoute,
