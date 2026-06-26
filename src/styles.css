@@ -707,5 +707,3 @@ hr { border-color: var(--ssf-border); }
 }
 .ssf-panel-body { padding: 0.75rem; display: flex; flex-direction: column; gap: 0.5rem; }
 .ssf-card-unread { border-left: 3px solid var(--ssf-primary); background: rgba(79, 124, 255, 0.06); }
-
-.ssf-card { background: var(--ssf-surface); border: 1px solid var(--ssf-border); border-radius: 14px; box-shadow: var(--ssf-card-shadow); }
