@@ -17,7 +17,7 @@ export const Route = createFileRoute("/login")({
 function LoginPage() {
   const navigate = useNavigate();
   const { login } = useAuth();
-  const [form, setForm] = useState({ username: "", password: "" });
+  const [form, setForm] = useState({ username: "", password: "", role: "USER" as "USER" | "PROVIDER" });
   const [loading, setLoading] = useState(false);
 
   const submit = (e: React.FormEvent) => {
@@ -29,9 +29,9 @@ function LoginPage() {
     setLoading(true);
     setTimeout(() => {
       setLoading(false);
-      login(form.username.trim(), "USER");
+      login(form.username.trim(), form.role);
       toast.success("Login successful");
-      navigate({ to: "/user" });
+      navigate({ to: form.role === "PROVIDER" ? "/pro" : "/user" });
     }, 500);
   };
 
@@ -59,6 +59,16 @@ function LoginPage() {
                 <Lock size={16} className="position-absolute" style={{ left: 12, top: 12, color: "#94a3b8" }} />
                 <input type="password" className="form-control ps-5" placeholder="Enter password" required
                   value={form.password} onChange={(e) => setForm({ ...form, password: e.target.value })} />
+              </div>
+
+              <label className="form-label small fw-semibold">Login as</label>
+              <div className="d-flex gap-2 mb-3">
+                {(["USER", "PROVIDER"] as const).map((r) => (
+                  <button type="button" key={r}
+                    onClick={() => setForm({ ...form, role: r })}
+                    className={`ssf-chip flex-fill ${form.role === r ? "active" : ""}`}
+                  >{r}</button>
+                ))}
               </div>
 
               <div className="d-flex justify-content-between align-items-center mb-3 small">
