@@ -27,6 +27,7 @@ import { Route as UserBookingsRouteImport } from './routes/user.bookings'
 import { Route as ServiceIdRouteImport } from './routes/service.$id'
 import { Route as ProviderIdRouteImport } from './routes/provider.$id'
 import { Route as ProServicesRouteImport } from './routes/pro.services'
+import { Route as ProBookingsRouteImport } from './routes/pro.bookings'
 import { Route as ProServicesAddRouteImport } from './routes/pro.services.add'
 
 const UserRoute = UserRouteImport.update({
@@ -119,6 +120,11 @@ const ProServicesRoute = ProServicesRouteImport.update({
   path: '/services',
   getParentRoute: () => ProRoute,
 } as any)
+const ProBookingsRoute = ProBookingsRouteImport.update({
+  id: '/bookings',
+  path: '/bookings',
+  getParentRoute: () => ProRoute,
+} as any)
 const ProServicesAddRoute = ProServicesAddRouteImport.update({
   id: '/add',
   path: '/add',
@@ -135,6 +141,7 @@ export interface FileRoutesByFullPath {
   '/register': typeof RegisterRoute
   '/services': typeof ServicesRoute
   '/user': typeof UserRouteWithChildren
+  '/pro/bookings': typeof ProBookingsRoute
   '/pro/services': typeof ProServicesRouteWithChildren
   '/provider/$id': typeof ProviderIdRoute
   '/service/$id': typeof ServiceIdRoute
@@ -154,6 +161,7 @@ export interface FileRoutesByTo {
   '/providers': typeof ProvidersRoute
   '/register': typeof RegisterRoute
   '/services': typeof ServicesRoute
+  '/pro/bookings': typeof ProBookingsRoute
   '/pro/services': typeof ProServicesRouteWithChildren
   '/provider/$id': typeof ProviderIdRoute
   '/service/$id': typeof ServiceIdRoute
@@ -176,6 +184,7 @@ export interface FileRoutesById {
   '/register': typeof RegisterRoute
   '/services': typeof ServicesRoute
   '/user': typeof UserRouteWithChildren
+  '/pro/bookings': typeof ProBookingsRoute
   '/pro/services': typeof ProServicesRouteWithChildren
   '/provider/$id': typeof ProviderIdRoute
   '/service/$id': typeof ServiceIdRoute
@@ -199,6 +208,7 @@ export interface FileRouteTypes {
     | '/register'
     | '/services'
     | '/user'
+    | '/pro/bookings'
     | '/pro/services'
     | '/provider/$id'
     | '/service/$id'
@@ -218,6 +228,7 @@ export interface FileRouteTypes {
     | '/providers'
     | '/register'
     | '/services'
+    | '/pro/bookings'
     | '/pro/services'
     | '/provider/$id'
     | '/service/$id'
@@ -239,6 +250,7 @@ export interface FileRouteTypes {
     | '/register'
     | '/services'
     | '/user'
+    | '/pro/bookings'
     | '/pro/services'
     | '/provider/$id'
     | '/service/$id'
@@ -393,6 +405,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProServicesRouteImport
       parentRoute: typeof ProRoute
     }
+    '/pro/bookings': {
+      id: '/pro/bookings'
+      path: '/bookings'
+      fullPath: '/pro/bookings'
+      preLoaderRoute: typeof ProBookingsRouteImport
+      parentRoute: typeof ProRoute
+    }
     '/pro/services/add': {
       id: '/pro/services/add'
       path: '/add'
@@ -416,11 +435,13 @@ const ProServicesRouteWithChildren = ProServicesRoute._addFileChildren(
 )
 
 interface ProRouteChildren {
+  ProBookingsRoute: typeof ProBookingsRoute
   ProServicesRoute: typeof ProServicesRouteWithChildren
   ProIndexRoute: typeof ProIndexRoute
 }
 
 const ProRouteChildren: ProRouteChildren = {
+  ProBookingsRoute: ProBookingsRoute,
   ProServicesRoute: ProServicesRouteWithChildren,
   ProIndexRoute: ProIndexRoute,
 }
