@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as UserRouteImport } from './routes/user'
 import { Route as ServicesRouteImport } from './routes/services'
 import { Route as RegisterRouteImport } from './routes/register'
 import { Route as ProvidersRouteImport } from './routes/providers'
@@ -19,6 +20,11 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as ServiceIdRouteImport } from './routes/service.$id'
 import { Route as ProviderIdRouteImport } from './routes/provider.$id'
 
+const UserRoute = UserRouteImport.update({
+  id: '/user',
+  path: '/user',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ServicesRoute = ServicesRouteImport.update({
   id: '/services',
   path: '/services',
@@ -73,6 +79,7 @@ export interface FileRoutesByFullPath {
   '/providers': typeof ProvidersRoute
   '/register': typeof RegisterRoute
   '/services': typeof ServicesRoute
+  '/user': typeof UserRoute
   '/provider/$id': typeof ProviderIdRoute
   '/service/$id': typeof ServiceIdRoute
 }
@@ -84,6 +91,7 @@ export interface FileRoutesByTo {
   '/providers': typeof ProvidersRoute
   '/register': typeof RegisterRoute
   '/services': typeof ServicesRoute
+  '/user': typeof UserRoute
   '/provider/$id': typeof ProviderIdRoute
   '/service/$id': typeof ServiceIdRoute
 }
@@ -96,6 +104,7 @@ export interface FileRoutesById {
   '/providers': typeof ProvidersRoute
   '/register': typeof RegisterRoute
   '/services': typeof ServicesRoute
+  '/user': typeof UserRoute
   '/provider/$id': typeof ProviderIdRoute
   '/service/$id': typeof ServiceIdRoute
 }
@@ -109,6 +118,7 @@ export interface FileRouteTypes {
     | '/providers'
     | '/register'
     | '/services'
+    | '/user'
     | '/provider/$id'
     | '/service/$id'
   fileRoutesByTo: FileRoutesByTo
@@ -120,6 +130,7 @@ export interface FileRouteTypes {
     | '/providers'
     | '/register'
     | '/services'
+    | '/user'
     | '/provider/$id'
     | '/service/$id'
   id:
@@ -131,6 +142,7 @@ export interface FileRouteTypes {
     | '/providers'
     | '/register'
     | '/services'
+    | '/user'
     | '/provider/$id'
     | '/service/$id'
   fileRoutesById: FileRoutesById
@@ -143,12 +155,20 @@ export interface RootRouteChildren {
   ProvidersRoute: typeof ProvidersRoute
   RegisterRoute: typeof RegisterRoute
   ServicesRoute: typeof ServicesRoute
+  UserRoute: typeof UserRoute
   ProviderIdRoute: typeof ProviderIdRoute
   ServiceIdRoute: typeof ServiceIdRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/user': {
+      id: '/user'
+      path: '/user'
+      fullPath: '/user'
+      preLoaderRoute: typeof UserRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/services': {
       id: '/services'
       path: '/services'
@@ -223,6 +243,7 @@ const rootRouteChildren: RootRouteChildren = {
   ProvidersRoute: ProvidersRoute,
   RegisterRoute: RegisterRoute,
   ServicesRoute: ServicesRoute,
+  UserRoute: UserRoute,
   ProviderIdRoute: ProviderIdRoute,
   ServiceIdRoute: ServiceIdRoute,
 }
