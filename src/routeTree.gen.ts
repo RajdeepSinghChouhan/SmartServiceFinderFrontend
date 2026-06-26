@@ -13,6 +13,7 @@ import { Route as UserRouteImport } from './routes/user'
 import { Route as ServicesRouteImport } from './routes/services'
 import { Route as RegisterRouteImport } from './routes/register'
 import { Route as ProvidersRouteImport } from './routes/providers'
+import { Route as ProRouteImport } from './routes/pro'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as R500RouteImport } from './routes/500'
 import { Route as R403RouteImport } from './routes/403'
@@ -43,6 +44,11 @@ const RegisterRoute = RegisterRouteImport.update({
 const ProvidersRoute = ProvidersRouteImport.update({
   id: '/providers',
   path: '/providers',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProRoute = ProRouteImport.update({
+  id: '/pro',
+  path: '/pro',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LoginRoute = LoginRouteImport.update({
@@ -106,6 +112,7 @@ export interface FileRoutesByFullPath {
   '/403': typeof R403Route
   '/500': typeof R500Route
   '/login': typeof LoginRoute
+  '/pro': typeof ProRoute
   '/providers': typeof ProvidersRoute
   '/register': typeof RegisterRoute
   '/services': typeof ServicesRoute
@@ -123,6 +130,7 @@ export interface FileRoutesByTo {
   '/403': typeof R403Route
   '/500': typeof R500Route
   '/login': typeof LoginRoute
+  '/pro': typeof ProRoute
   '/providers': typeof ProvidersRoute
   '/register': typeof RegisterRoute
   '/services': typeof ServicesRoute
@@ -140,6 +148,7 @@ export interface FileRoutesById {
   '/403': typeof R403Route
   '/500': typeof R500Route
   '/login': typeof LoginRoute
+  '/pro': typeof ProRoute
   '/providers': typeof ProvidersRoute
   '/register': typeof RegisterRoute
   '/services': typeof ServicesRoute
@@ -159,6 +168,7 @@ export interface FileRouteTypes {
     | '/403'
     | '/500'
     | '/login'
+    | '/pro'
     | '/providers'
     | '/register'
     | '/services'
@@ -176,6 +186,7 @@ export interface FileRouteTypes {
     | '/403'
     | '/500'
     | '/login'
+    | '/pro'
     | '/providers'
     | '/register'
     | '/services'
@@ -192,6 +203,7 @@ export interface FileRouteTypes {
     | '/403'
     | '/500'
     | '/login'
+    | '/pro'
     | '/providers'
     | '/register'
     | '/services'
@@ -210,6 +222,7 @@ export interface RootRouteChildren {
   R403Route: typeof R403Route
   R500Route: typeof R500Route
   LoginRoute: typeof LoginRoute
+  ProRoute: typeof ProRoute
   ProvidersRoute: typeof ProvidersRoute
   RegisterRoute: typeof RegisterRoute
   ServicesRoute: typeof ServicesRoute
@@ -246,6 +259,13 @@ declare module '@tanstack/react-router' {
       path: '/providers'
       fullPath: '/providers'
       preLoaderRoute: typeof ProvidersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/pro': {
+      id: '/pro'
+      path: '/pro'
+      fullPath: '/pro'
+      preLoaderRoute: typeof ProRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/login': {
@@ -351,6 +371,7 @@ const rootRouteChildren: RootRouteChildren = {
   R403Route: R403Route,
   R500Route: R500Route,
   LoginRoute: LoginRoute,
+  ProRoute: ProRoute,
   ProvidersRoute: ProvidersRoute,
   RegisterRoute: RegisterRoute,
   ServicesRoute: ServicesRoute,
