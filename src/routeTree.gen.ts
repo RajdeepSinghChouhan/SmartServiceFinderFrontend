@@ -28,6 +28,7 @@ import { Route as ServiceIdRouteImport } from './routes/service.$id'
 import { Route as ProviderIdRouteImport } from './routes/provider.$id'
 import { Route as ProServicesRouteImport } from './routes/pro.services'
 import { Route as ProReviewsRouteImport } from './routes/pro.reviews'
+import { Route as ProNotificationsRouteImport } from './routes/pro.notifications'
 import { Route as ProBookingsRouteImport } from './routes/pro.bookings'
 import { Route as ProServicesAddRouteImport } from './routes/pro.services.add'
 
@@ -126,6 +127,11 @@ const ProReviewsRoute = ProReviewsRouteImport.update({
   path: '/reviews',
   getParentRoute: () => ProRoute,
 } as any)
+const ProNotificationsRoute = ProNotificationsRouteImport.update({
+  id: '/notifications',
+  path: '/notifications',
+  getParentRoute: () => ProRoute,
+} as any)
 const ProBookingsRoute = ProBookingsRouteImport.update({
   id: '/bookings',
   path: '/bookings',
@@ -148,6 +154,7 @@ export interface FileRoutesByFullPath {
   '/services': typeof ServicesRoute
   '/user': typeof UserRouteWithChildren
   '/pro/bookings': typeof ProBookingsRoute
+  '/pro/notifications': typeof ProNotificationsRoute
   '/pro/reviews': typeof ProReviewsRoute
   '/pro/services': typeof ProServicesRouteWithChildren
   '/provider/$id': typeof ProviderIdRoute
@@ -169,6 +176,7 @@ export interface FileRoutesByTo {
   '/register': typeof RegisterRoute
   '/services': typeof ServicesRoute
   '/pro/bookings': typeof ProBookingsRoute
+  '/pro/notifications': typeof ProNotificationsRoute
   '/pro/reviews': typeof ProReviewsRoute
   '/pro/services': typeof ProServicesRouteWithChildren
   '/provider/$id': typeof ProviderIdRoute
@@ -193,6 +201,7 @@ export interface FileRoutesById {
   '/services': typeof ServicesRoute
   '/user': typeof UserRouteWithChildren
   '/pro/bookings': typeof ProBookingsRoute
+  '/pro/notifications': typeof ProNotificationsRoute
   '/pro/reviews': typeof ProReviewsRoute
   '/pro/services': typeof ProServicesRouteWithChildren
   '/provider/$id': typeof ProviderIdRoute
@@ -218,6 +227,7 @@ export interface FileRouteTypes {
     | '/services'
     | '/user'
     | '/pro/bookings'
+    | '/pro/notifications'
     | '/pro/reviews'
     | '/pro/services'
     | '/provider/$id'
@@ -239,6 +249,7 @@ export interface FileRouteTypes {
     | '/register'
     | '/services'
     | '/pro/bookings'
+    | '/pro/notifications'
     | '/pro/reviews'
     | '/pro/services'
     | '/provider/$id'
@@ -262,6 +273,7 @@ export interface FileRouteTypes {
     | '/services'
     | '/user'
     | '/pro/bookings'
+    | '/pro/notifications'
     | '/pro/reviews'
     | '/pro/services'
     | '/provider/$id'
@@ -424,6 +436,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProReviewsRouteImport
       parentRoute: typeof ProRoute
     }
+    '/pro/notifications': {
+      id: '/pro/notifications'
+      path: '/notifications'
+      fullPath: '/pro/notifications'
+      preLoaderRoute: typeof ProNotificationsRouteImport
+      parentRoute: typeof ProRoute
+    }
     '/pro/bookings': {
       id: '/pro/bookings'
       path: '/bookings'
@@ -455,6 +474,7 @@ const ProServicesRouteWithChildren = ProServicesRoute._addFileChildren(
 
 interface ProRouteChildren {
   ProBookingsRoute: typeof ProBookingsRoute
+  ProNotificationsRoute: typeof ProNotificationsRoute
   ProReviewsRoute: typeof ProReviewsRoute
   ProServicesRoute: typeof ProServicesRouteWithChildren
   ProIndexRoute: typeof ProIndexRoute
@@ -462,6 +482,7 @@ interface ProRouteChildren {
 
 const ProRouteChildren: ProRouteChildren = {
   ProBookingsRoute: ProBookingsRoute,
+  ProNotificationsRoute: ProNotificationsRoute,
   ProReviewsRoute: ProReviewsRoute,
   ProServicesRoute: ProServicesRouteWithChildren,
   ProIndexRoute: ProIndexRoute,
