@@ -19,6 +19,7 @@ import { Route as R500RouteImport } from './routes/500'
 import { Route as R403RouteImport } from './routes/403'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as UserIndexRouteImport } from './routes/user.index'
+import { Route as ProIndexRouteImport } from './routes/pro.index'
 import { Route as UserReviewsRouteImport } from './routes/user.reviews'
 import { Route as UserProfileRouteImport } from './routes/user.profile'
 import { Route as UserNotificationsRouteImport } from './routes/user.notifications'
@@ -76,6 +77,11 @@ const UserIndexRoute = UserIndexRouteImport.update({
   path: '/',
   getParentRoute: () => UserRoute,
 } as any)
+const ProIndexRoute = ProIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => ProRoute,
+} as any)
 const UserReviewsRoute = UserReviewsRouteImport.update({
   id: '/reviews',
   path: '/reviews',
@@ -112,7 +118,7 @@ export interface FileRoutesByFullPath {
   '/403': typeof R403Route
   '/500': typeof R500Route
   '/login': typeof LoginRoute
-  '/pro': typeof ProRoute
+  '/pro': typeof ProRouteWithChildren
   '/providers': typeof ProvidersRoute
   '/register': typeof RegisterRoute
   '/services': typeof ServicesRoute
@@ -123,6 +129,7 @@ export interface FileRoutesByFullPath {
   '/user/notifications': typeof UserNotificationsRoute
   '/user/profile': typeof UserProfileRoute
   '/user/reviews': typeof UserReviewsRoute
+  '/pro/': typeof ProIndexRoute
   '/user/': typeof UserIndexRoute
 }
 export interface FileRoutesByTo {
@@ -130,7 +137,6 @@ export interface FileRoutesByTo {
   '/403': typeof R403Route
   '/500': typeof R500Route
   '/login': typeof LoginRoute
-  '/pro': typeof ProRoute
   '/providers': typeof ProvidersRoute
   '/register': typeof RegisterRoute
   '/services': typeof ServicesRoute
@@ -140,6 +146,7 @@ export interface FileRoutesByTo {
   '/user/notifications': typeof UserNotificationsRoute
   '/user/profile': typeof UserProfileRoute
   '/user/reviews': typeof UserReviewsRoute
+  '/pro': typeof ProIndexRoute
   '/user': typeof UserIndexRoute
 }
 export interface FileRoutesById {
@@ -148,7 +155,7 @@ export interface FileRoutesById {
   '/403': typeof R403Route
   '/500': typeof R500Route
   '/login': typeof LoginRoute
-  '/pro': typeof ProRoute
+  '/pro': typeof ProRouteWithChildren
   '/providers': typeof ProvidersRoute
   '/register': typeof RegisterRoute
   '/services': typeof ServicesRoute
@@ -159,6 +166,7 @@ export interface FileRoutesById {
   '/user/notifications': typeof UserNotificationsRoute
   '/user/profile': typeof UserProfileRoute
   '/user/reviews': typeof UserReviewsRoute
+  '/pro/': typeof ProIndexRoute
   '/user/': typeof UserIndexRoute
 }
 export interface FileRouteTypes {
@@ -179,6 +187,7 @@ export interface FileRouteTypes {
     | '/user/notifications'
     | '/user/profile'
     | '/user/reviews'
+    | '/pro/'
     | '/user/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -186,7 +195,6 @@ export interface FileRouteTypes {
     | '/403'
     | '/500'
     | '/login'
-    | '/pro'
     | '/providers'
     | '/register'
     | '/services'
@@ -196,6 +204,7 @@ export interface FileRouteTypes {
     | '/user/notifications'
     | '/user/profile'
     | '/user/reviews'
+    | '/pro'
     | '/user'
   id:
     | '__root__'
@@ -214,6 +223,7 @@ export interface FileRouteTypes {
     | '/user/notifications'
     | '/user/profile'
     | '/user/reviews'
+    | '/pro/'
     | '/user/'
   fileRoutesById: FileRoutesById
 }
@@ -222,7 +232,7 @@ export interface RootRouteChildren {
   R403Route: typeof R403Route
   R500Route: typeof R500Route
   LoginRoute: typeof LoginRoute
-  ProRoute: typeof ProRoute
+  ProRoute: typeof ProRouteWithChildren
   ProvidersRoute: typeof ProvidersRoute
   RegisterRoute: typeof RegisterRoute
   ServicesRoute: typeof ServicesRoute
@@ -303,6 +313,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof UserIndexRouteImport
       parentRoute: typeof UserRoute
     }
+    '/pro/': {
+      id: '/pro/'
+      path: '/'
+      fullPath: '/pro/'
+      preLoaderRoute: typeof ProIndexRouteImport
+      parentRoute: typeof ProRoute
+    }
     '/user/reviews': {
       id: '/user/reviews'
       path: '/reviews'
@@ -348,6 +365,16 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface ProRouteChildren {
+  ProIndexRoute: typeof ProIndexRoute
+}
+
+const ProRouteChildren: ProRouteChildren = {
+  ProIndexRoute: ProIndexRoute,
+}
+
+const ProRouteWithChildren = ProRoute._addFileChildren(ProRouteChildren)
+
 interface UserRouteChildren {
   UserBookingsRoute: typeof UserBookingsRoute
   UserNotificationsRoute: typeof UserNotificationsRoute
@@ -371,7 +398,7 @@ const rootRouteChildren: RootRouteChildren = {
   R403Route: R403Route,
   R500Route: R500Route,
   LoginRoute: LoginRoute,
-  ProRoute: ProRoute,
+  ProRoute: ProRouteWithChildren,
   ProvidersRoute: ProvidersRoute,
   RegisterRoute: RegisterRoute,
   ServicesRoute: ServicesRoute,
