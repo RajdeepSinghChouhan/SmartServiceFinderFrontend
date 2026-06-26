@@ -13,17 +13,25 @@ import { Route as UserRouteImport } from './routes/user'
 import { Route as ServicesRouteImport } from './routes/services'
 import { Route as RegisterRouteImport } from './routes/register'
 import { Route as ProvidersRouteImport } from './routes/providers'
+import { Route as ProRouteImport } from './routes/pro'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as R500RouteImport } from './routes/500'
 import { Route as R403RouteImport } from './routes/403'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as UserIndexRouteImport } from './routes/user.index'
+import { Route as ProIndexRouteImport } from './routes/pro.index'
 import { Route as UserReviewsRouteImport } from './routes/user.reviews'
 import { Route as UserProfileRouteImport } from './routes/user.profile'
 import { Route as UserNotificationsRouteImport } from './routes/user.notifications'
 import { Route as UserBookingsRouteImport } from './routes/user.bookings'
 import { Route as ServiceIdRouteImport } from './routes/service.$id'
 import { Route as ProviderIdRouteImport } from './routes/provider.$id'
+import { Route as ProServicesRouteImport } from './routes/pro.services'
+import { Route as ProReviewsRouteImport } from './routes/pro.reviews'
+import { Route as ProProfileRouteImport } from './routes/pro.profile'
+import { Route as ProNotificationsRouteImport } from './routes/pro.notifications'
+import { Route as ProBookingsRouteImport } from './routes/pro.bookings'
+import { Route as ProServicesAddRouteImport } from './routes/pro.services.add'
 
 const UserRoute = UserRouteImport.update({
   id: '/user',
@@ -43,6 +51,11 @@ const RegisterRoute = RegisterRouteImport.update({
 const ProvidersRoute = ProvidersRouteImport.update({
   id: '/providers',
   path: '/providers',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProRoute = ProRouteImport.update({
+  id: '/pro',
+  path: '/pro',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LoginRoute = LoginRouteImport.update({
@@ -69,6 +82,11 @@ const UserIndexRoute = UserIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => UserRoute,
+} as any)
+const ProIndexRoute = ProIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => ProRoute,
 } as any)
 const UserReviewsRoute = UserReviewsRouteImport.update({
   id: '/reviews',
@@ -100,23 +118,61 @@ const ProviderIdRoute = ProviderIdRouteImport.update({
   path: '/provider/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ProServicesRoute = ProServicesRouteImport.update({
+  id: '/services',
+  path: '/services',
+  getParentRoute: () => ProRoute,
+} as any)
+const ProReviewsRoute = ProReviewsRouteImport.update({
+  id: '/reviews',
+  path: '/reviews',
+  getParentRoute: () => ProRoute,
+} as any)
+const ProProfileRoute = ProProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => ProRoute,
+} as any)
+const ProNotificationsRoute = ProNotificationsRouteImport.update({
+  id: '/notifications',
+  path: '/notifications',
+  getParentRoute: () => ProRoute,
+} as any)
+const ProBookingsRoute = ProBookingsRouteImport.update({
+  id: '/bookings',
+  path: '/bookings',
+  getParentRoute: () => ProRoute,
+} as any)
+const ProServicesAddRoute = ProServicesAddRouteImport.update({
+  id: '/add',
+  path: '/add',
+  getParentRoute: () => ProServicesRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/403': typeof R403Route
   '/500': typeof R500Route
   '/login': typeof LoginRoute
+  '/pro': typeof ProRouteWithChildren
   '/providers': typeof ProvidersRoute
   '/register': typeof RegisterRoute
   '/services': typeof ServicesRoute
   '/user': typeof UserRouteWithChildren
+  '/pro/bookings': typeof ProBookingsRoute
+  '/pro/notifications': typeof ProNotificationsRoute
+  '/pro/profile': typeof ProProfileRoute
+  '/pro/reviews': typeof ProReviewsRoute
+  '/pro/services': typeof ProServicesRouteWithChildren
   '/provider/$id': typeof ProviderIdRoute
   '/service/$id': typeof ServiceIdRoute
   '/user/bookings': typeof UserBookingsRoute
   '/user/notifications': typeof UserNotificationsRoute
   '/user/profile': typeof UserProfileRoute
   '/user/reviews': typeof UserReviewsRoute
+  '/pro/': typeof ProIndexRoute
   '/user/': typeof UserIndexRoute
+  '/pro/services/add': typeof ProServicesAddRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -126,13 +182,20 @@ export interface FileRoutesByTo {
   '/providers': typeof ProvidersRoute
   '/register': typeof RegisterRoute
   '/services': typeof ServicesRoute
+  '/pro/bookings': typeof ProBookingsRoute
+  '/pro/notifications': typeof ProNotificationsRoute
+  '/pro/profile': typeof ProProfileRoute
+  '/pro/reviews': typeof ProReviewsRoute
+  '/pro/services': typeof ProServicesRouteWithChildren
   '/provider/$id': typeof ProviderIdRoute
   '/service/$id': typeof ServiceIdRoute
   '/user/bookings': typeof UserBookingsRoute
   '/user/notifications': typeof UserNotificationsRoute
   '/user/profile': typeof UserProfileRoute
   '/user/reviews': typeof UserReviewsRoute
+  '/pro': typeof ProIndexRoute
   '/user': typeof UserIndexRoute
+  '/pro/services/add': typeof ProServicesAddRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -140,17 +203,25 @@ export interface FileRoutesById {
   '/403': typeof R403Route
   '/500': typeof R500Route
   '/login': typeof LoginRoute
+  '/pro': typeof ProRouteWithChildren
   '/providers': typeof ProvidersRoute
   '/register': typeof RegisterRoute
   '/services': typeof ServicesRoute
   '/user': typeof UserRouteWithChildren
+  '/pro/bookings': typeof ProBookingsRoute
+  '/pro/notifications': typeof ProNotificationsRoute
+  '/pro/profile': typeof ProProfileRoute
+  '/pro/reviews': typeof ProReviewsRoute
+  '/pro/services': typeof ProServicesRouteWithChildren
   '/provider/$id': typeof ProviderIdRoute
   '/service/$id': typeof ServiceIdRoute
   '/user/bookings': typeof UserBookingsRoute
   '/user/notifications': typeof UserNotificationsRoute
   '/user/profile': typeof UserProfileRoute
   '/user/reviews': typeof UserReviewsRoute
+  '/pro/': typeof ProIndexRoute
   '/user/': typeof UserIndexRoute
+  '/pro/services/add': typeof ProServicesAddRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -159,17 +230,25 @@ export interface FileRouteTypes {
     | '/403'
     | '/500'
     | '/login'
+    | '/pro'
     | '/providers'
     | '/register'
     | '/services'
     | '/user'
+    | '/pro/bookings'
+    | '/pro/notifications'
+    | '/pro/profile'
+    | '/pro/reviews'
+    | '/pro/services'
     | '/provider/$id'
     | '/service/$id'
     | '/user/bookings'
     | '/user/notifications'
     | '/user/profile'
     | '/user/reviews'
+    | '/pro/'
     | '/user/'
+    | '/pro/services/add'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -179,30 +258,45 @@ export interface FileRouteTypes {
     | '/providers'
     | '/register'
     | '/services'
+    | '/pro/bookings'
+    | '/pro/notifications'
+    | '/pro/profile'
+    | '/pro/reviews'
+    | '/pro/services'
     | '/provider/$id'
     | '/service/$id'
     | '/user/bookings'
     | '/user/notifications'
     | '/user/profile'
     | '/user/reviews'
+    | '/pro'
     | '/user'
+    | '/pro/services/add'
   id:
     | '__root__'
     | '/'
     | '/403'
     | '/500'
     | '/login'
+    | '/pro'
     | '/providers'
     | '/register'
     | '/services'
     | '/user'
+    | '/pro/bookings'
+    | '/pro/notifications'
+    | '/pro/profile'
+    | '/pro/reviews'
+    | '/pro/services'
     | '/provider/$id'
     | '/service/$id'
     | '/user/bookings'
     | '/user/notifications'
     | '/user/profile'
     | '/user/reviews'
+    | '/pro/'
     | '/user/'
+    | '/pro/services/add'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -210,6 +304,7 @@ export interface RootRouteChildren {
   R403Route: typeof R403Route
   R500Route: typeof R500Route
   LoginRoute: typeof LoginRoute
+  ProRoute: typeof ProRouteWithChildren
   ProvidersRoute: typeof ProvidersRoute
   RegisterRoute: typeof RegisterRoute
   ServicesRoute: typeof ServicesRoute
@@ -248,6 +343,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProvidersRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/pro': {
+      id: '/pro'
+      path: '/pro'
+      fullPath: '/pro'
+      preLoaderRoute: typeof ProRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/login': {
       id: '/login'
       path: '/login'
@@ -282,6 +384,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/user/'
       preLoaderRoute: typeof UserIndexRouteImport
       parentRoute: typeof UserRoute
+    }
+    '/pro/': {
+      id: '/pro/'
+      path: '/'
+      fullPath: '/pro/'
+      preLoaderRoute: typeof ProIndexRouteImport
+      parentRoute: typeof ProRoute
     }
     '/user/reviews': {
       id: '/user/reviews'
@@ -325,8 +434,82 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProviderIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/pro/services': {
+      id: '/pro/services'
+      path: '/services'
+      fullPath: '/pro/services'
+      preLoaderRoute: typeof ProServicesRouteImport
+      parentRoute: typeof ProRoute
+    }
+    '/pro/reviews': {
+      id: '/pro/reviews'
+      path: '/reviews'
+      fullPath: '/pro/reviews'
+      preLoaderRoute: typeof ProReviewsRouteImport
+      parentRoute: typeof ProRoute
+    }
+    '/pro/profile': {
+      id: '/pro/profile'
+      path: '/profile'
+      fullPath: '/pro/profile'
+      preLoaderRoute: typeof ProProfileRouteImport
+      parentRoute: typeof ProRoute
+    }
+    '/pro/notifications': {
+      id: '/pro/notifications'
+      path: '/notifications'
+      fullPath: '/pro/notifications'
+      preLoaderRoute: typeof ProNotificationsRouteImport
+      parentRoute: typeof ProRoute
+    }
+    '/pro/bookings': {
+      id: '/pro/bookings'
+      path: '/bookings'
+      fullPath: '/pro/bookings'
+      preLoaderRoute: typeof ProBookingsRouteImport
+      parentRoute: typeof ProRoute
+    }
+    '/pro/services/add': {
+      id: '/pro/services/add'
+      path: '/add'
+      fullPath: '/pro/services/add'
+      preLoaderRoute: typeof ProServicesAddRouteImport
+      parentRoute: typeof ProServicesRoute
+    }
   }
 }
+
+interface ProServicesRouteChildren {
+  ProServicesAddRoute: typeof ProServicesAddRoute
+}
+
+const ProServicesRouteChildren: ProServicesRouteChildren = {
+  ProServicesAddRoute: ProServicesAddRoute,
+}
+
+const ProServicesRouteWithChildren = ProServicesRoute._addFileChildren(
+  ProServicesRouteChildren,
+)
+
+interface ProRouteChildren {
+  ProBookingsRoute: typeof ProBookingsRoute
+  ProNotificationsRoute: typeof ProNotificationsRoute
+  ProProfileRoute: typeof ProProfileRoute
+  ProReviewsRoute: typeof ProReviewsRoute
+  ProServicesRoute: typeof ProServicesRouteWithChildren
+  ProIndexRoute: typeof ProIndexRoute
+}
+
+const ProRouteChildren: ProRouteChildren = {
+  ProBookingsRoute: ProBookingsRoute,
+  ProNotificationsRoute: ProNotificationsRoute,
+  ProProfileRoute: ProProfileRoute,
+  ProReviewsRoute: ProReviewsRoute,
+  ProServicesRoute: ProServicesRouteWithChildren,
+  ProIndexRoute: ProIndexRoute,
+}
+
+const ProRouteWithChildren = ProRoute._addFileChildren(ProRouteChildren)
 
 interface UserRouteChildren {
   UserBookingsRoute: typeof UserBookingsRoute
@@ -351,6 +534,7 @@ const rootRouteChildren: RootRouteChildren = {
   R403Route: R403Route,
   R500Route: R500Route,
   LoginRoute: LoginRoute,
+  ProRoute: ProRouteWithChildren,
   ProvidersRoute: ProvidersRoute,
   RegisterRoute: RegisterRoute,
   ServicesRoute: ServicesRoute,

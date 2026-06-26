@@ -679,3 +679,31 @@ hr { border-color: var(--ssf-border); }
   .ssf-dashboard-header { padding: 1rem; }
   .ssf-dashboard-content { padding: 1rem; }
 }
+
+/* Provider dashboard helpers */
+.ssf-filter-bar { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.ssf-filter-chip {
+  background: var(--ssf-surface);
+  border: 1px solid var(--ssf-border);
+  color: #cbd5e1;
+  padding: 0.42rem 0.95rem;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+.ssf-filter-chip:hover { border-color: var(--ssf-primary-light); color: #fff; }
+.ssf-filter-chip.active {
+  background: var(--ssf-gradient);
+  color: #fff;
+  border-color: transparent;
+}
+.ssf-filter-chip.active .text-secondary { color: rgba(255,255,255,0.85) !important; }
+
+.ssf-panel-header {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid var(--ssf-border);
+}
+.ssf-panel-body { padding: 0.75rem; display: flex; flex-direction: column; gap: 0.5rem; }
+.ssf-card-unread { border-left: 3px solid var(--ssf-primary); background: rgba(79, 124, 255, 0.06); }

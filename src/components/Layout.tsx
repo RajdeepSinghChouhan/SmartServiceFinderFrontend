@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { Menu, X, Sparkles, Bell, User as UserIcon, Facebook, Twitter, Instagram, Linkedin, LayoutDashboard, LogOut } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
 import { mockNotifications } from "../data/userMock";
+import { providerNotifications } from "../data/providerMock";
 
 function Navbar() {
   const [open, setOpen] = useState(false);
@@ -23,7 +24,12 @@ function Navbar() {
     return () => document.removeEventListener("mousedown", onClick);
   }, []);
 
-  const unread = mockNotifications.filter((n) => !n.isRead).length;
+  const isProvider = user?.role === "PROVIDER";
+  const notifSource = isProvider ? providerNotifications : mockNotifications;
+  const unread = notifSource.filter((n) => !n.isRead).length;
+  const dashboardTo = isProvider ? "/pro" : "/user";
+  const notifTo = isProvider ? "/pro/notifications" : "/user/notifications";
+  const profileTo = isProvider ? "/pro/profile" : "/user/profile";
 
   const links = [
     { to: "/", label: "Home" },
@@ -77,8 +83,8 @@ function Navbar() {
                       <Link to="/user/notifications" onClick={() => setNotifOpen(false)} className="small">View all</Link>
                     </div>
                     <div className="ssf-dropdown-body">
-                      {mockNotifications.slice(0, 4).map((n) => (
-                        <Link key={n.id} to="/user/notifications" onClick={() => setNotifOpen(false)} className={`ssf-dropdown-item ${!n.isRead ? "unread" : ""}`}>
+                      {notifSource.slice(0, 4).map((n) => (
+                        <Link key={n.id} to={notifTo as any} onClick={() => setNotifOpen(false)} className={`ssf-dropdown-item ${!n.isRead ? "unread" : ""}`}>
                           <div className="fw-semibold small">{n.title}</div>
                           <div className="text-secondary small text-truncate">{n.message}</div>
                           <div className="text-secondary" style={{ fontSize: "0.72rem" }}>{n.createdAt}</div>
@@ -97,10 +103,10 @@ function Navbar() {
                 </button>
                 {userOpen && (
                   <div className="ssf-dropdown" style={{ minWidth: 220 }}>
-                    <Link to="/user" onClick={() => setUserOpen(false)} className="ssf-dropdown-item d-flex align-items-center gap-2">
+                    <Link to={dashboardTo as any} onClick={() => setUserOpen(false)} className="ssf-dropdown-item d-flex align-items-center gap-2">
                       <LayoutDashboard size={16} /> Dashboard
                     </Link>
-                    <Link to="/user/profile" onClick={() => setUserOpen(false)} className="ssf-dropdown-item d-flex align-items-center gap-2">
+                    <Link to={profileTo as any} onClick={() => setUserOpen(false)} className="ssf-dropdown-item d-flex align-items-center gap-2">
                       <UserIcon size={16} /> Profile
                     </Link>
                     <button
@@ -131,8 +137,8 @@ function Navbar() {
           ))}
           {isAuthenticated ? (
             <>
-              <Link to="/user" className="ssf-nav-link d-block py-2" onClick={() => setOpen(false)}>Dashboard</Link>
-              <Link to="/user/notifications" className="ssf-nav-link d-block py-2" onClick={() => setOpen(false)}>
+              <Link to={dashboardTo as any} className="ssf-nav-link d-block py-2" onClick={() => setOpen(false)}>Dashboard</Link>
+              <Link to={notifTo as any} className="ssf-nav-link d-block py-2" onClick={() => setOpen(false)}>
                 Notifications {unread > 0 && <span className="badge bg-danger ms-2">{unread}</span>}
               </Link>
               <button className="btn btn-ssf-ghost w-100 mt-2" onClick={() => { setOpen(false); logout(); window.location.href = "/"; }}>Logout</button>
@@ -204,7 +210,7 @@ function Footer() {
 
 export default function Layout() {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
-  const isDashboard = pathname.startsWith("/user");
+  const isDashboard = pathname.startsWith("/user") || pathname.startsWith("/pro");
   return (
     <>
       <Navbar />
