@@ -1,11 +1,29 @@
 import { Link, Outlet, useRouterState } from "@tanstack/react-router";
-import { useState } from "react";
-import { Menu, X, Sparkles, Bell, User, Facebook, Twitter, Instagram, Linkedin } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { Menu, X, Sparkles, Bell, User as UserIcon, Facebook, Twitter, Instagram, Linkedin, LayoutDashboard, LogOut } from "lucide-react";
+import { useAuth } from "../context/AuthContext";
+import { mockNotifications } from "../data/userMock";
 
 function Navbar() {
   const [open, setOpen] = useState(false);
+  const [notifOpen, setNotifOpen] = useState(false);
+  const [userOpen, setUserOpen] = useState(false);
+  const notifRef = useRef<HTMLDivElement>(null);
+  const userRef = useRef<HTMLDivElement>(null);
+  const { user, isAuthenticated, logout } = useAuth();
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const isActive = (p: string) => (p === "/" ? pathname === "/" : pathname.startsWith(p));
+
+  useEffect(() => {
+    const onClick = (e: MouseEvent) => {
+      if (notifRef.current && !notifRef.current.contains(e.target as Node)) setNotifOpen(false);
+      if (userRef.current && !userRef.current.contains(e.target as Node)) setUserOpen(false);
+    };
+    document.addEventListener("mousedown", onClick);
+    return () => document.removeEventListener("mousedown", onClick);
+  }, []);
+
+  const unread = mockNotifications.filter((n) => !n.isRead).length;
 
   const links = [
     { to: "/", label: "Home" },
@@ -39,8 +57,63 @@ function Navbar() {
               {l.label}
             </Link>
           ))}
-          <Link to="/login" className="btn btn-ssf-ghost ms-2">Login</Link>
-          <Link to="/register" className="btn btn-ssf-primary ms-2">Register</Link>
+          {!isAuthenticated && (
+            <>
+              <Link to="/login" className="btn btn-ssf-ghost ms-2">Login</Link>
+              <Link to="/register" className="btn btn-ssf-primary ms-2">Register</Link>
+            </>
+          )}
+          {isAuthenticated && (
+            <>
+              <div className="position-relative ms-2" ref={notifRef}>
+                <button className="btn btn-ssf-ghost position-relative" onClick={() => setNotifOpen((v) => !v)} aria-label="Notifications">
+                  <Bell size={18} />
+                  {unread > 0 && <span className="ssf-notif-badge">{unread}</span>}
+                </button>
+                {notifOpen && (
+                  <div className="ssf-dropdown">
+                    <div className="ssf-dropdown-header">
+                      <span className="fw-semibold">Notifications</span>
+                      <Link to="/user/notifications" onClick={() => setNotifOpen(false)} className="small">View all</Link>
+                    </div>
+                    <div className="ssf-dropdown-body">
+                      {mockNotifications.slice(0, 4).map((n) => (
+                        <Link key={n.id} to="/user/notifications" onClick={() => setNotifOpen(false)} className={`ssf-dropdown-item ${!n.isRead ? "unread" : ""}`}>
+                          <div className="fw-semibold small">{n.title}</div>
+                          <div className="text-secondary small text-truncate">{n.message}</div>
+                          <div className="text-secondary" style={{ fontSize: "0.72rem" }}>{n.createdAt}</div>
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+              <div className="position-relative ms-2" ref={userRef}>
+                <button className="btn btn-ssf-ghost d-flex align-items-center gap-2" onClick={() => setUserOpen((v) => !v)}>
+                  <div className="ssf-avatar" style={{ width: 28, height: 28, fontSize: "0.8rem" }}>
+                    {(user?.fullName || user?.username || "U").charAt(0).toUpperCase()}
+                  </div>
+                  <span className="small fw-semibold">{user?.username}</span>
+                </button>
+                {userOpen && (
+                  <div className="ssf-dropdown" style={{ minWidth: 220 }}>
+                    <Link to="/user" onClick={() => setUserOpen(false)} className="ssf-dropdown-item d-flex align-items-center gap-2">
+                      <LayoutDashboard size={16} /> Dashboard
+                    </Link>
+                    <Link to="/user/profile" onClick={() => setUserOpen(false)} className="ssf-dropdown-item d-flex align-items-center gap-2">
+                      <UserIcon size={16} /> Profile
+                    </Link>
+                    <button
+                      className="ssf-dropdown-item d-flex align-items-center gap-2 w-100 text-start"
+                      onClick={() => { setUserOpen(false); logout(); window.location.href = "/"; }}
+                    >
+                      <LogOut size={16} /> Logout
+                    </button>
+                  </div>
+                )}
+              </div>
+            </>
+          )}
         </div>
       </div>
 
@@ -56,10 +129,20 @@ function Navbar() {
               {l.label}
             </Link>
           ))}
-          <div className="d-flex gap-2 mt-2">
-            <Link to="/login" className="btn btn-ssf-ghost flex-fill" onClick={() => setOpen(false)}>Login</Link>
-            <Link to="/register" className="btn btn-ssf-primary flex-fill" onClick={() => setOpen(false)}>Register</Link>
-          </div>
+          {isAuthenticated ? (
+            <>
+              <Link to="/user" className="ssf-nav-link d-block py-2" onClick={() => setOpen(false)}>Dashboard</Link>
+              <Link to="/user/notifications" className="ssf-nav-link d-block py-2" onClick={() => setOpen(false)}>
+                Notifications {unread > 0 && <span className="badge bg-danger ms-2">{unread}</span>}
+              </Link>
+              <button className="btn btn-ssf-ghost w-100 mt-2" onClick={() => { setOpen(false); logout(); window.location.href = "/"; }}>Logout</button>
+            </>
+          ) : (
+            <div className="d-flex gap-2 mt-2">
+              <Link to="/login" className="btn btn-ssf-ghost flex-fill" onClick={() => setOpen(false)}>Login</Link>
+              <Link to="/register" className="btn btn-ssf-primary flex-fill" onClick={() => setOpen(false)}>Register</Link>
+            </div>
+          )}
         </div>
       )}
     </nav>
