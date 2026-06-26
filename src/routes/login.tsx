@@ -1,6 +1,8 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { Lock, User, Sparkles } from "lucide-react";
+import { toast } from "sonner";
+import { useAuth } from "../context/AuthContext";
 
 export const Route = createFileRoute("/login")({
   head: () => ({
@@ -13,16 +15,24 @@ export const Route = createFileRoute("/login")({
 });
 
 function LoginPage() {
+  const navigate = useNavigate();
+  const { login } = useAuth();
   const [form, setForm] = useState({ username: "", password: "" });
   const [loading, setLoading] = useState(false);
 
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!form.username.trim() || !form.password) {
+      toast.error("Please enter username and password");
+      return;
+    }
     setLoading(true);
     setTimeout(() => {
       setLoading(false);
-      alert("Login API will connect to your Spring Boot backend.");
-    }, 700);
+      login(form.username.trim(), "USER");
+      toast.success("Login successful");
+      navigate({ to: "/user" });
+    }, 500);
   };
 
   return (
