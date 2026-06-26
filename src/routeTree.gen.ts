@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as UserRouteImport } from './routes/user'
 import { Route as ServicesRouteImport } from './routes/services'
 import { Route as RegisterRouteImport } from './routes/register'
 import { Route as ProvidersRouteImport } from './routes/providers'
@@ -16,9 +17,19 @@ import { Route as LoginRouteImport } from './routes/login'
 import { Route as R500RouteImport } from './routes/500'
 import { Route as R403RouteImport } from './routes/403'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as UserIndexRouteImport } from './routes/user.index'
+import { Route as UserReviewsRouteImport } from './routes/user.reviews'
+import { Route as UserProfileRouteImport } from './routes/user.profile'
+import { Route as UserNotificationsRouteImport } from './routes/user.notifications'
+import { Route as UserBookingsRouteImport } from './routes/user.bookings'
 import { Route as ServiceIdRouteImport } from './routes/service.$id'
 import { Route as ProviderIdRouteImport } from './routes/provider.$id'
 
+const UserRoute = UserRouteImport.update({
+  id: '/user',
+  path: '/user',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ServicesRoute = ServicesRouteImport.update({
   id: '/services',
   path: '/services',
@@ -54,6 +65,31 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const UserIndexRoute = UserIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => UserRoute,
+} as any)
+const UserReviewsRoute = UserReviewsRouteImport.update({
+  id: '/reviews',
+  path: '/reviews',
+  getParentRoute: () => UserRoute,
+} as any)
+const UserProfileRoute = UserProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => UserRoute,
+} as any)
+const UserNotificationsRoute = UserNotificationsRouteImport.update({
+  id: '/notifications',
+  path: '/notifications',
+  getParentRoute: () => UserRoute,
+} as any)
+const UserBookingsRoute = UserBookingsRouteImport.update({
+  id: '/bookings',
+  path: '/bookings',
+  getParentRoute: () => UserRoute,
+} as any)
 const ServiceIdRoute = ServiceIdRouteImport.update({
   id: '/service/$id',
   path: '/service/$id',
@@ -73,8 +109,14 @@ export interface FileRoutesByFullPath {
   '/providers': typeof ProvidersRoute
   '/register': typeof RegisterRoute
   '/services': typeof ServicesRoute
+  '/user': typeof UserRouteWithChildren
   '/provider/$id': typeof ProviderIdRoute
   '/service/$id': typeof ServiceIdRoute
+  '/user/bookings': typeof UserBookingsRoute
+  '/user/notifications': typeof UserNotificationsRoute
+  '/user/profile': typeof UserProfileRoute
+  '/user/reviews': typeof UserReviewsRoute
+  '/user/': typeof UserIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -86,6 +128,11 @@ export interface FileRoutesByTo {
   '/services': typeof ServicesRoute
   '/provider/$id': typeof ProviderIdRoute
   '/service/$id': typeof ServiceIdRoute
+  '/user/bookings': typeof UserBookingsRoute
+  '/user/notifications': typeof UserNotificationsRoute
+  '/user/profile': typeof UserProfileRoute
+  '/user/reviews': typeof UserReviewsRoute
+  '/user': typeof UserIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -96,8 +143,14 @@ export interface FileRoutesById {
   '/providers': typeof ProvidersRoute
   '/register': typeof RegisterRoute
   '/services': typeof ServicesRoute
+  '/user': typeof UserRouteWithChildren
   '/provider/$id': typeof ProviderIdRoute
   '/service/$id': typeof ServiceIdRoute
+  '/user/bookings': typeof UserBookingsRoute
+  '/user/notifications': typeof UserNotificationsRoute
+  '/user/profile': typeof UserProfileRoute
+  '/user/reviews': typeof UserReviewsRoute
+  '/user/': typeof UserIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -109,8 +162,14 @@ export interface FileRouteTypes {
     | '/providers'
     | '/register'
     | '/services'
+    | '/user'
     | '/provider/$id'
     | '/service/$id'
+    | '/user/bookings'
+    | '/user/notifications'
+    | '/user/profile'
+    | '/user/reviews'
+    | '/user/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -122,6 +181,11 @@ export interface FileRouteTypes {
     | '/services'
     | '/provider/$id'
     | '/service/$id'
+    | '/user/bookings'
+    | '/user/notifications'
+    | '/user/profile'
+    | '/user/reviews'
+    | '/user'
   id:
     | '__root__'
     | '/'
@@ -131,8 +195,14 @@ export interface FileRouteTypes {
     | '/providers'
     | '/register'
     | '/services'
+    | '/user'
     | '/provider/$id'
     | '/service/$id'
+    | '/user/bookings'
+    | '/user/notifications'
+    | '/user/profile'
+    | '/user/reviews'
+    | '/user/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -143,12 +213,20 @@ export interface RootRouteChildren {
   ProvidersRoute: typeof ProvidersRoute
   RegisterRoute: typeof RegisterRoute
   ServicesRoute: typeof ServicesRoute
+  UserRoute: typeof UserRouteWithChildren
   ProviderIdRoute: typeof ProviderIdRoute
   ServiceIdRoute: typeof ServiceIdRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/user': {
+      id: '/user'
+      path: '/user'
+      fullPath: '/user'
+      preLoaderRoute: typeof UserRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/services': {
       id: '/services'
       path: '/services'
@@ -198,6 +276,41 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/user/': {
+      id: '/user/'
+      path: '/'
+      fullPath: '/user/'
+      preLoaderRoute: typeof UserIndexRouteImport
+      parentRoute: typeof UserRoute
+    }
+    '/user/reviews': {
+      id: '/user/reviews'
+      path: '/reviews'
+      fullPath: '/user/reviews'
+      preLoaderRoute: typeof UserReviewsRouteImport
+      parentRoute: typeof UserRoute
+    }
+    '/user/profile': {
+      id: '/user/profile'
+      path: '/profile'
+      fullPath: '/user/profile'
+      preLoaderRoute: typeof UserProfileRouteImport
+      parentRoute: typeof UserRoute
+    }
+    '/user/notifications': {
+      id: '/user/notifications'
+      path: '/notifications'
+      fullPath: '/user/notifications'
+      preLoaderRoute: typeof UserNotificationsRouteImport
+      parentRoute: typeof UserRoute
+    }
+    '/user/bookings': {
+      id: '/user/bookings'
+      path: '/bookings'
+      fullPath: '/user/bookings'
+      preLoaderRoute: typeof UserBookingsRouteImport
+      parentRoute: typeof UserRoute
+    }
     '/service/$id': {
       id: '/service/$id'
       path: '/service/$id'
@@ -215,6 +328,24 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface UserRouteChildren {
+  UserBookingsRoute: typeof UserBookingsRoute
+  UserNotificationsRoute: typeof UserNotificationsRoute
+  UserProfileRoute: typeof UserProfileRoute
+  UserReviewsRoute: typeof UserReviewsRoute
+  UserIndexRoute: typeof UserIndexRoute
+}
+
+const UserRouteChildren: UserRouteChildren = {
+  UserBookingsRoute: UserBookingsRoute,
+  UserNotificationsRoute: UserNotificationsRoute,
+  UserProfileRoute: UserProfileRoute,
+  UserReviewsRoute: UserReviewsRoute,
+  UserIndexRoute: UserIndexRoute,
+}
+
+const UserRouteWithChildren = UserRoute._addFileChildren(UserRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   R403Route: R403Route,
@@ -223,6 +354,7 @@ const rootRouteChildren: RootRouteChildren = {
   ProvidersRoute: ProvidersRoute,
   RegisterRoute: RegisterRoute,
   ServicesRoute: ServicesRoute,
+  UserRoute: UserRouteWithChildren,
   ProviderIdRoute: ProviderIdRoute,
   ServiceIdRoute: ServiceIdRoute,
 }
