@@ -26,6 +26,7 @@ import { Route as UserNotificationsRouteImport } from './routes/user.notificatio
 import { Route as UserBookingsRouteImport } from './routes/user.bookings'
 import { Route as ServiceIdRouteImport } from './routes/service.$id'
 import { Route as ProviderIdRouteImport } from './routes/provider.$id'
+import { Route as ProServicesRouteImport } from './routes/pro.services'
 
 const UserRoute = UserRouteImport.update({
   id: '/user',
@@ -112,6 +113,11 @@ const ProviderIdRoute = ProviderIdRouteImport.update({
   path: '/provider/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ProServicesRoute = ProServicesRouteImport.update({
+  id: '/services',
+  path: '/services',
+  getParentRoute: () => ProRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -123,6 +129,7 @@ export interface FileRoutesByFullPath {
   '/register': typeof RegisterRoute
   '/services': typeof ServicesRoute
   '/user': typeof UserRouteWithChildren
+  '/pro/services': typeof ProServicesRoute
   '/provider/$id': typeof ProviderIdRoute
   '/service/$id': typeof ServiceIdRoute
   '/user/bookings': typeof UserBookingsRoute
@@ -140,6 +147,7 @@ export interface FileRoutesByTo {
   '/providers': typeof ProvidersRoute
   '/register': typeof RegisterRoute
   '/services': typeof ServicesRoute
+  '/pro/services': typeof ProServicesRoute
   '/provider/$id': typeof ProviderIdRoute
   '/service/$id': typeof ServiceIdRoute
   '/user/bookings': typeof UserBookingsRoute
@@ -160,6 +168,7 @@ export interface FileRoutesById {
   '/register': typeof RegisterRoute
   '/services': typeof ServicesRoute
   '/user': typeof UserRouteWithChildren
+  '/pro/services': typeof ProServicesRoute
   '/provider/$id': typeof ProviderIdRoute
   '/service/$id': typeof ServiceIdRoute
   '/user/bookings': typeof UserBookingsRoute
@@ -181,6 +190,7 @@ export interface FileRouteTypes {
     | '/register'
     | '/services'
     | '/user'
+    | '/pro/services'
     | '/provider/$id'
     | '/service/$id'
     | '/user/bookings'
@@ -198,6 +208,7 @@ export interface FileRouteTypes {
     | '/providers'
     | '/register'
     | '/services'
+    | '/pro/services'
     | '/provider/$id'
     | '/service/$id'
     | '/user/bookings'
@@ -217,6 +228,7 @@ export interface FileRouteTypes {
     | '/register'
     | '/services'
     | '/user'
+    | '/pro/services'
     | '/provider/$id'
     | '/service/$id'
     | '/user/bookings'
@@ -362,14 +374,23 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProviderIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/pro/services': {
+      id: '/pro/services'
+      path: '/services'
+      fullPath: '/pro/services'
+      preLoaderRoute: typeof ProServicesRouteImport
+      parentRoute: typeof ProRoute
+    }
   }
 }
 
 interface ProRouteChildren {
+  ProServicesRoute: typeof ProServicesRoute
   ProIndexRoute: typeof ProIndexRoute
 }
 
 const ProRouteChildren: ProRouteChildren = {
+  ProServicesRoute: ProServicesRoute,
   ProIndexRoute: ProIndexRoute,
 }
 
