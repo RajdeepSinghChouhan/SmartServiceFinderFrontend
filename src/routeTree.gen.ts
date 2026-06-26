@@ -17,6 +17,7 @@ import { Route as LoginRouteImport } from './routes/login'
 import { Route as R500RouteImport } from './routes/500'
 import { Route as R403RouteImport } from './routes/403'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as UserIndexRouteImport } from './routes/user.index'
 import { Route as ServiceIdRouteImport } from './routes/service.$id'
 import { Route as ProviderIdRouteImport } from './routes/provider.$id'
 
@@ -60,6 +61,11 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const UserIndexRoute = UserIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => UserRoute,
+} as any)
 const ServiceIdRoute = ServiceIdRouteImport.update({
   id: '/service/$id',
   path: '/service/$id',
@@ -79,9 +85,10 @@ export interface FileRoutesByFullPath {
   '/providers': typeof ProvidersRoute
   '/register': typeof RegisterRoute
   '/services': typeof ServicesRoute
-  '/user': typeof UserRoute
+  '/user': typeof UserRouteWithChildren
   '/provider/$id': typeof ProviderIdRoute
   '/service/$id': typeof ServiceIdRoute
+  '/user/': typeof UserIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -91,9 +98,9 @@ export interface FileRoutesByTo {
   '/providers': typeof ProvidersRoute
   '/register': typeof RegisterRoute
   '/services': typeof ServicesRoute
-  '/user': typeof UserRoute
   '/provider/$id': typeof ProviderIdRoute
   '/service/$id': typeof ServiceIdRoute
+  '/user': typeof UserIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -104,9 +111,10 @@ export interface FileRoutesById {
   '/providers': typeof ProvidersRoute
   '/register': typeof RegisterRoute
   '/services': typeof ServicesRoute
-  '/user': typeof UserRoute
+  '/user': typeof UserRouteWithChildren
   '/provider/$id': typeof ProviderIdRoute
   '/service/$id': typeof ServiceIdRoute
+  '/user/': typeof UserIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -121,6 +129,7 @@ export interface FileRouteTypes {
     | '/user'
     | '/provider/$id'
     | '/service/$id'
+    | '/user/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -130,9 +139,9 @@ export interface FileRouteTypes {
     | '/providers'
     | '/register'
     | '/services'
-    | '/user'
     | '/provider/$id'
     | '/service/$id'
+    | '/user'
   id:
     | '__root__'
     | '/'
@@ -145,6 +154,7 @@ export interface FileRouteTypes {
     | '/user'
     | '/provider/$id'
     | '/service/$id'
+    | '/user/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -155,7 +165,7 @@ export interface RootRouteChildren {
   ProvidersRoute: typeof ProvidersRoute
   RegisterRoute: typeof RegisterRoute
   ServicesRoute: typeof ServicesRoute
-  UserRoute: typeof UserRoute
+  UserRoute: typeof UserRouteWithChildren
   ProviderIdRoute: typeof ProviderIdRoute
   ServiceIdRoute: typeof ServiceIdRoute
 }
@@ -218,6 +228,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/user/': {
+      id: '/user/'
+      path: '/'
+      fullPath: '/user/'
+      preLoaderRoute: typeof UserIndexRouteImport
+      parentRoute: typeof UserRoute
+    }
     '/service/$id': {
       id: '/service/$id'
       path: '/service/$id'
@@ -235,6 +252,16 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface UserRouteChildren {
+  UserIndexRoute: typeof UserIndexRoute
+}
+
+const UserRouteChildren: UserRouteChildren = {
+  UserIndexRoute: UserIndexRoute,
+}
+
+const UserRouteWithChildren = UserRoute._addFileChildren(UserRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   R403Route: R403Route,
@@ -243,7 +270,7 @@ const rootRouteChildren: RootRouteChildren = {
   ProvidersRoute: ProvidersRoute,
   RegisterRoute: RegisterRoute,
   ServicesRoute: ServicesRoute,
-  UserRoute: UserRoute,
+  UserRoute: UserRouteWithChildren,
   ProviderIdRoute: ProviderIdRoute,
   ServiceIdRoute: ServiceIdRoute,
 }
