@@ -27,6 +27,7 @@ import { Route as UserBookingsRouteImport } from './routes/user.bookings'
 import { Route as ServiceIdRouteImport } from './routes/service.$id'
 import { Route as ProviderIdRouteImport } from './routes/provider.$id'
 import { Route as ProServicesRouteImport } from './routes/pro.services'
+import { Route as ProServicesAddRouteImport } from './routes/pro.services.add'
 
 const UserRoute = UserRouteImport.update({
   id: '/user',
@@ -118,6 +119,11 @@ const ProServicesRoute = ProServicesRouteImport.update({
   path: '/services',
   getParentRoute: () => ProRoute,
 } as any)
+const ProServicesAddRoute = ProServicesAddRouteImport.update({
+  id: '/add',
+  path: '/add',
+  getParentRoute: () => ProServicesRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -129,7 +135,7 @@ export interface FileRoutesByFullPath {
   '/register': typeof RegisterRoute
   '/services': typeof ServicesRoute
   '/user': typeof UserRouteWithChildren
-  '/pro/services': typeof ProServicesRoute
+  '/pro/services': typeof ProServicesRouteWithChildren
   '/provider/$id': typeof ProviderIdRoute
   '/service/$id': typeof ServiceIdRoute
   '/user/bookings': typeof UserBookingsRoute
@@ -138,6 +144,7 @@ export interface FileRoutesByFullPath {
   '/user/reviews': typeof UserReviewsRoute
   '/pro/': typeof ProIndexRoute
   '/user/': typeof UserIndexRoute
+  '/pro/services/add': typeof ProServicesAddRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -147,7 +154,7 @@ export interface FileRoutesByTo {
   '/providers': typeof ProvidersRoute
   '/register': typeof RegisterRoute
   '/services': typeof ServicesRoute
-  '/pro/services': typeof ProServicesRoute
+  '/pro/services': typeof ProServicesRouteWithChildren
   '/provider/$id': typeof ProviderIdRoute
   '/service/$id': typeof ServiceIdRoute
   '/user/bookings': typeof UserBookingsRoute
@@ -156,6 +163,7 @@ export interface FileRoutesByTo {
   '/user/reviews': typeof UserReviewsRoute
   '/pro': typeof ProIndexRoute
   '/user': typeof UserIndexRoute
+  '/pro/services/add': typeof ProServicesAddRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -168,7 +176,7 @@ export interface FileRoutesById {
   '/register': typeof RegisterRoute
   '/services': typeof ServicesRoute
   '/user': typeof UserRouteWithChildren
-  '/pro/services': typeof ProServicesRoute
+  '/pro/services': typeof ProServicesRouteWithChildren
   '/provider/$id': typeof ProviderIdRoute
   '/service/$id': typeof ServiceIdRoute
   '/user/bookings': typeof UserBookingsRoute
@@ -177,6 +185,7 @@ export interface FileRoutesById {
   '/user/reviews': typeof UserReviewsRoute
   '/pro/': typeof ProIndexRoute
   '/user/': typeof UserIndexRoute
+  '/pro/services/add': typeof ProServicesAddRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -199,6 +208,7 @@ export interface FileRouteTypes {
     | '/user/reviews'
     | '/pro/'
     | '/user/'
+    | '/pro/services/add'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -217,6 +227,7 @@ export interface FileRouteTypes {
     | '/user/reviews'
     | '/pro'
     | '/user'
+    | '/pro/services/add'
   id:
     | '__root__'
     | '/'
@@ -237,6 +248,7 @@ export interface FileRouteTypes {
     | '/user/reviews'
     | '/pro/'
     | '/user/'
+    | '/pro/services/add'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -381,16 +393,35 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProServicesRouteImport
       parentRoute: typeof ProRoute
     }
+    '/pro/services/add': {
+      id: '/pro/services/add'
+      path: '/add'
+      fullPath: '/pro/services/add'
+      preLoaderRoute: typeof ProServicesAddRouteImport
+      parentRoute: typeof ProServicesRoute
+    }
   }
 }
 
+interface ProServicesRouteChildren {
+  ProServicesAddRoute: typeof ProServicesAddRoute
+}
+
+const ProServicesRouteChildren: ProServicesRouteChildren = {
+  ProServicesAddRoute: ProServicesAddRoute,
+}
+
+const ProServicesRouteWithChildren = ProServicesRoute._addFileChildren(
+  ProServicesRouteChildren,
+)
+
 interface ProRouteChildren {
-  ProServicesRoute: typeof ProServicesRoute
+  ProServicesRoute: typeof ProServicesRouteWithChildren
   ProIndexRoute: typeof ProIndexRoute
 }
 
 const ProRouteChildren: ProRouteChildren = {
-  ProServicesRoute: ProServicesRoute,
+  ProServicesRoute: ProServicesRouteWithChildren,
   ProIndexRoute: ProIndexRoute,
 }
 
