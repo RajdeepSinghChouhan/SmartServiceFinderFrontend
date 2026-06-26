@@ -19,6 +19,7 @@ import { Route as R403RouteImport } from './routes/403'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as UserIndexRouteImport } from './routes/user.index'
 import { Route as UserReviewsRouteImport } from './routes/user.reviews'
+import { Route as UserProfileRouteImport } from './routes/user.profile'
 import { Route as UserNotificationsRouteImport } from './routes/user.notifications'
 import { Route as UserBookingsRouteImport } from './routes/user.bookings'
 import { Route as ServiceIdRouteImport } from './routes/service.$id'
@@ -74,6 +75,11 @@ const UserReviewsRoute = UserReviewsRouteImport.update({
   path: '/reviews',
   getParentRoute: () => UserRoute,
 } as any)
+const UserProfileRoute = UserProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => UserRoute,
+} as any)
 const UserNotificationsRoute = UserNotificationsRouteImport.update({
   id: '/notifications',
   path: '/notifications',
@@ -108,6 +114,7 @@ export interface FileRoutesByFullPath {
   '/service/$id': typeof ServiceIdRoute
   '/user/bookings': typeof UserBookingsRoute
   '/user/notifications': typeof UserNotificationsRoute
+  '/user/profile': typeof UserProfileRoute
   '/user/reviews': typeof UserReviewsRoute
   '/user/': typeof UserIndexRoute
 }
@@ -123,6 +130,7 @@ export interface FileRoutesByTo {
   '/service/$id': typeof ServiceIdRoute
   '/user/bookings': typeof UserBookingsRoute
   '/user/notifications': typeof UserNotificationsRoute
+  '/user/profile': typeof UserProfileRoute
   '/user/reviews': typeof UserReviewsRoute
   '/user': typeof UserIndexRoute
 }
@@ -140,6 +148,7 @@ export interface FileRoutesById {
   '/service/$id': typeof ServiceIdRoute
   '/user/bookings': typeof UserBookingsRoute
   '/user/notifications': typeof UserNotificationsRoute
+  '/user/profile': typeof UserProfileRoute
   '/user/reviews': typeof UserReviewsRoute
   '/user/': typeof UserIndexRoute
 }
@@ -158,6 +167,7 @@ export interface FileRouteTypes {
     | '/service/$id'
     | '/user/bookings'
     | '/user/notifications'
+    | '/user/profile'
     | '/user/reviews'
     | '/user/'
   fileRoutesByTo: FileRoutesByTo
@@ -173,6 +183,7 @@ export interface FileRouteTypes {
     | '/service/$id'
     | '/user/bookings'
     | '/user/notifications'
+    | '/user/profile'
     | '/user/reviews'
     | '/user'
   id:
@@ -189,6 +200,7 @@ export interface FileRouteTypes {
     | '/service/$id'
     | '/user/bookings'
     | '/user/notifications'
+    | '/user/profile'
     | '/user/reviews'
     | '/user/'
   fileRoutesById: FileRoutesById
@@ -278,6 +290,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof UserReviewsRouteImport
       parentRoute: typeof UserRoute
     }
+    '/user/profile': {
+      id: '/user/profile'
+      path: '/profile'
+      fullPath: '/user/profile'
+      preLoaderRoute: typeof UserProfileRouteImport
+      parentRoute: typeof UserRoute
+    }
     '/user/notifications': {
       id: '/user/notifications'
       path: '/notifications'
@@ -312,6 +331,7 @@ declare module '@tanstack/react-router' {
 interface UserRouteChildren {
   UserBookingsRoute: typeof UserBookingsRoute
   UserNotificationsRoute: typeof UserNotificationsRoute
+  UserProfileRoute: typeof UserProfileRoute
   UserReviewsRoute: typeof UserReviewsRoute
   UserIndexRoute: typeof UserIndexRoute
 }
@@ -319,6 +339,7 @@ interface UserRouteChildren {
 const UserRouteChildren: UserRouteChildren = {
   UserBookingsRoute: UserBookingsRoute,
   UserNotificationsRoute: UserNotificationsRoute,
+  UserProfileRoute: UserProfileRoute,
   UserReviewsRoute: UserReviewsRoute,
   UserIndexRoute: UserIndexRoute,
 }
