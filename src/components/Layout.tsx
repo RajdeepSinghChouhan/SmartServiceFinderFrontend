@@ -203,13 +203,15 @@ function Footer() {
 }
 
 export default function Layout() {
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const isDashboard = pathname.startsWith("/user");
   return (
     <>
       <Navbar />
       <main>
         <Outlet />
       </main>
-      <Footer />
+      {!isDashboard && <Footer />}
     </>
   );
 }
