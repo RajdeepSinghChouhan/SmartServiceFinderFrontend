@@ -18,6 +18,7 @@ import { Route as R500RouteImport } from './routes/500'
 import { Route as R403RouteImport } from './routes/403'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as UserIndexRouteImport } from './routes/user.index'
+import { Route as UserBookingsRouteImport } from './routes/user.bookings'
 import { Route as ServiceIdRouteImport } from './routes/service.$id'
 import { Route as ProviderIdRouteImport } from './routes/provider.$id'
 
@@ -66,6 +67,11 @@ const UserIndexRoute = UserIndexRouteImport.update({
   path: '/',
   getParentRoute: () => UserRoute,
 } as any)
+const UserBookingsRoute = UserBookingsRouteImport.update({
+  id: '/bookings',
+  path: '/bookings',
+  getParentRoute: () => UserRoute,
+} as any)
 const ServiceIdRoute = ServiceIdRouteImport.update({
   id: '/service/$id',
   path: '/service/$id',
@@ -88,6 +94,7 @@ export interface FileRoutesByFullPath {
   '/user': typeof UserRouteWithChildren
   '/provider/$id': typeof ProviderIdRoute
   '/service/$id': typeof ServiceIdRoute
+  '/user/bookings': typeof UserBookingsRoute
   '/user/': typeof UserIndexRoute
 }
 export interface FileRoutesByTo {
@@ -100,6 +107,7 @@ export interface FileRoutesByTo {
   '/services': typeof ServicesRoute
   '/provider/$id': typeof ProviderIdRoute
   '/service/$id': typeof ServiceIdRoute
+  '/user/bookings': typeof UserBookingsRoute
   '/user': typeof UserIndexRoute
 }
 export interface FileRoutesById {
@@ -114,6 +122,7 @@ export interface FileRoutesById {
   '/user': typeof UserRouteWithChildren
   '/provider/$id': typeof ProviderIdRoute
   '/service/$id': typeof ServiceIdRoute
+  '/user/bookings': typeof UserBookingsRoute
   '/user/': typeof UserIndexRoute
 }
 export interface FileRouteTypes {
@@ -129,6 +138,7 @@ export interface FileRouteTypes {
     | '/user'
     | '/provider/$id'
     | '/service/$id'
+    | '/user/bookings'
     | '/user/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -141,6 +151,7 @@ export interface FileRouteTypes {
     | '/services'
     | '/provider/$id'
     | '/service/$id'
+    | '/user/bookings'
     | '/user'
   id:
     | '__root__'
@@ -154,6 +165,7 @@ export interface FileRouteTypes {
     | '/user'
     | '/provider/$id'
     | '/service/$id'
+    | '/user/bookings'
     | '/user/'
   fileRoutesById: FileRoutesById
 }
@@ -235,6 +247,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof UserIndexRouteImport
       parentRoute: typeof UserRoute
     }
+    '/user/bookings': {
+      id: '/user/bookings'
+      path: '/bookings'
+      fullPath: '/user/bookings'
+      preLoaderRoute: typeof UserBookingsRouteImport
+      parentRoute: typeof UserRoute
+    }
     '/service/$id': {
       id: '/service/$id'
       path: '/service/$id'
@@ -253,10 +272,12 @@ declare module '@tanstack/react-router' {
 }
 
 interface UserRouteChildren {
+  UserBookingsRoute: typeof UserBookingsRoute
   UserIndexRoute: typeof UserIndexRoute
 }
 
 const UserRouteChildren: UserRouteChildren = {
+  UserBookingsRoute: UserBookingsRoute,
   UserIndexRoute: UserIndexRoute,
 }
 
