@@ -3,6 +3,8 @@ import { useState } from "react";
 import { Lock, User, Sparkles } from "lucide-react";
 import { toast } from "sonner";
 import { useAuth } from "../context/AuthContext";
+import { authApi } from "../api/authApi";
+import axios from "axios";
 
 export const Route = createFileRoute("/login")({
   head: () => ({
@@ -16,23 +18,37 @@ export const Route = createFileRoute("/login")({
 
 function LoginPage() {
   const navigate = useNavigate();
-  const { login } = useAuth();
+  const { login, loginWithToken } = useAuth();
   const [form, setForm] = useState({ username: "", password: "", role: "USER" as "USER" | "PROVIDER" });
   const [loading, setLoading] = useState(false);
 
-  const submit = (e: React.FormEvent) => {
+  const submit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!form.username.trim() || !form.password) {
       toast.error("Please enter username and password");
       return;
     }
     setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-      login(form.username.trim(), form.role);
+    try {
+      // Try real backend first per PRD JWT flow.
+      const { token } = await authApi.login({ username: form.username.trim(), password: form.password });
+      const u = loginWithToken(token);
+      if (!u) throw new Error("Invalid token");
       toast.success("Login successful");
-      navigate({ to: form.role === "PROVIDER" ? "/pro" : "/user" });
-    }, 500);
+      navigate({ to: u.role === "PROVIDER" ? "/pro" : "/user" });
+    } catch (err) {
+      // Backend unreachable → fall back to local mock login so the demo UI keeps working.
+      const networkOrNotFound =
+        axios.isAxiosError(err) && (!err.response || err.response.status === 404);
+      if (networkOrNotFound) {
+        const u = login(form.username.trim(), form.role);
+        toast.success("Logged in (offline demo mode)");
+        navigate({ to: u.role === "PROVIDER" ? "/pro" : "/user" });
+      }
+      // Other errors already toasted by the axios interceptor.
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (

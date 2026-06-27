@@ -2,8 +2,7 @@ import { Link, Outlet, useRouterState } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { Menu, X, Sparkles, Bell, User as UserIcon, Facebook, Twitter, Instagram, Linkedin, LayoutDashboard, LogOut } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
-import { mockNotifications } from "../data/userMock";
-import { providerNotifications } from "../data/providerMock";
+import { useNotifications } from "../context/NotificationContext";
 
 function Navbar() {
   const [open, setOpen] = useState(false);
@@ -12,6 +11,7 @@ function Navbar() {
   const notifRef = useRef<HTMLDivElement>(null);
   const userRef = useRef<HTMLDivElement>(null);
   const { user, isAuthenticated, logout } = useAuth();
+  const { notifications, unreadCount } = useNotifications();
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const isActive = (p: string) => (p === "/" ? pathname === "/" : pathname.startsWith(p));
 
@@ -25,8 +25,8 @@ function Navbar() {
   }, []);
 
   const isProvider = user?.role === "PROVIDER";
-  const notifSource = isProvider ? providerNotifications : mockNotifications;
-  const unread = notifSource.filter((n) => !n.isRead).length;
+  const notifSource = notifications;
+  const unread = unreadCount;
   const dashboardTo = isProvider ? "/pro" : "/user";
   const notifTo = isProvider ? "/pro/notifications" : "/user/notifications";
   const profileTo = isProvider ? "/pro/profile" : "/user/profile";
