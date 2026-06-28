@@ -1,8 +1,9 @@
 import { Link, Outlet, useRouterState } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
-import { Menu, X, Sparkles, Bell, User as UserIcon, Facebook, Twitter, Instagram, Linkedin, LayoutDashboard, LogOut } from "lucide-react";
+import { Menu, X, Sparkles, Bell, User as UserIcon, Facebook, Twitter, Instagram, Linkedin, LayoutDashboard, LogOut, Sun, Moon } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
 import { useNotifications } from "../context/NotificationContext";
+import { useTheme } from "../context/ThemeContext";
 
 function Navbar() {
   const [open, setOpen] = useState(false);
@@ -12,6 +13,7 @@ function Navbar() {
   const userRef = useRef<HTMLDivElement>(null);
   const { user, isAuthenticated, logout } = useAuth();
   const { notifications, unreadCount } = useNotifications();
+  const { theme, toggleTheme } = useTheme();
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const isActive = (p: string) => (p === "/" ? pathname === "/" : pathname.startsWith(p));
 
@@ -63,6 +65,14 @@ function Navbar() {
               {l.label}
             </Link>
           ))}
+          <button
+            className="btn btn-ssf-ghost ms-2"
+            onClick={toggleTheme}
+            aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} theme`}
+            title={`Switch to ${theme === "dark" ? "light" : "dark"} theme`}
+          >
+            {theme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
+          </button>
           {!isAuthenticated && (
             <>
               <Link to="/login" className="btn btn-ssf-ghost ms-2">Login</Link>
@@ -135,6 +145,12 @@ function Navbar() {
               {l.label}
             </Link>
           ))}
+          <button
+            className="btn btn-ssf-ghost w-100 mt-2 d-flex align-items-center justify-content-center gap-2"
+            onClick={toggleTheme}
+          >
+            {theme === "dark" ? <><Sun size={16} /> Light mode</> : <><Moon size={16} /> Dark mode</>}
+          </button>
           {isAuthenticated ? (
             <>
               <Link to={dashboardTo as any} className="ssf-nav-link d-block py-2" onClick={() => setOpen(false)}>Dashboard</Link>

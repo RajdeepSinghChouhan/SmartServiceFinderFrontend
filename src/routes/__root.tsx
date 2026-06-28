@@ -14,6 +14,7 @@ import { reportLovableError } from "../lib/lovable-error-reporting";
 import Layout from "../components/Layout";
 import { AuthProvider } from "../context/AuthContext";
 import { NotificationProvider } from "../context/NotificationContext";
+import { ThemeProvider } from "../context/ThemeContext";
 import { Toaster } from "sonner";
 
 function NotFoundComponent() {
@@ -97,12 +98,14 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <AuthProvider>
-        <NotificationProvider>
-          <Layout />
-          <Toaster position="top-right" theme="dark" richColors closeButton />
-        </NotificationProvider>
-      </AuthProvider>
+      <ThemeProvider>
+        <AuthProvider>
+          <NotificationProvider>
+            <Layout />
+            <Toaster position="top-right" richColors closeButton />
+          </NotificationProvider>
+        </AuthProvider>
+      </ThemeProvider>
     </QueryClientProvider>
   );
 }
