@@ -869,6 +869,41 @@ hr { border-color: var(--ssf-border); }
 [data-theme="light"] .ssf-empty-icon { background: #f1f5f9; color: #64748b; }
 [data-theme="light"] .ssf-spinner { border-color: #e2e8f0; border-top-color: var(--ssf-primary); }
 
+/* Status badges — darker text for contrast on light translucent backgrounds */
+[data-theme="light"] .ssf-status.pending    { background: rgba(245, 158, 11, 0.18); color: #b45309; }
+[data-theme="light"] .ssf-status.confirmed  { background: rgba(37, 99, 235, 0.14);  color: #1d4ed8; }
+[data-theme="light"] .ssf-status.completed  { background: rgba(16, 185, 129, 0.16); color: #047857; }
+[data-theme="light"] .ssf-status.cancelled  { background: rgba(100, 116, 139, 0.18); color: #475569; }
+[data-theme="light"] .ssf-status.rejected   { background: rgba(239, 68, 68, 0.14);  color: #b91c1c; }
+
+/* Notification type badges (light) */
+[data-theme="light"] .ssf-type-info    { background: rgba(37, 99, 235, 0.12); color: #1d4ed8; }
+[data-theme="light"] .ssf-type-success { background: rgba(16, 185, 129, 0.14); color: #047857; }
+[data-theme="light"] .ssf-type-danger  { background: rgba(239, 68, 68, 0.12);  color: #b91c1c; }
+[data-theme="light"] .ssf-type-muted   { background: rgba(100, 116, 139, 0.14); color: #475569; }
+
+/* Pill badges (availability / price) — light */
+[data-theme="light"] .ssf-badge-available   { background: rgba(16, 185, 129, 0.14); color: #047857; }
+[data-theme="light"] .ssf-badge-unavailable { background: rgba(239, 68, 68, 0.12);  color: #b91c1c; }
+[data-theme="light"] .ssf-badge-price       { background: rgba(37, 99, 235, 0.12);  color: #1d4ed8; }
+
+/* Detail hero stays blue in both themes — keep light text legible */
+.ssf-detail-hero .ssf-badge { color: #fff; }
+
+/* Generic Bootstrap utility safety in light mode */
+[data-theme="light"] .text-muted { color: #64748b !important; }
+[data-theme="light"] .border { border-color: var(--ssf-border) !important; }
+
+/* Ghost button on dark blue gradient backgrounds shouldn't invert in light theme
+   when placed on a colored hero — keep readable in both themes by ensuring
+   .btn-ssf-primary always has white text */
+.btn-ssf-primary, .btn-ssf-primary:hover, .btn-ssf-primary:focus,
+.btn-ssf-primary:active { color: #fff !important; }
+
+/* Star color token (used inline) */
+:root { --ssf-star: #f59e0b; }
+[data-theme="light"] { --ssf-star: #d97706; }
+
 /* Smooth transition when toggling */
 html { transition: background-color 0.25s ease; }
 body,
