@@ -31,6 +31,7 @@ import { Route as ProReviewsRouteImport } from './routes/pro.reviews'
 import { Route as ProProfileRouteImport } from './routes/pro.profile'
 import { Route as ProNotificationsRouteImport } from './routes/pro.notifications'
 import { Route as ProBookingsRouteImport } from './routes/pro.bookings'
+import { Route as BookServiceIdRouteImport } from './routes/book.$serviceId'
 import { Route as ProServicesAddRouteImport } from './routes/pro.services.add'
 
 const UserRoute = UserRouteImport.update({
@@ -143,6 +144,11 @@ const ProBookingsRoute = ProBookingsRouteImport.update({
   path: '/bookings',
   getParentRoute: () => ProRoute,
 } as any)
+const BookServiceIdRoute = BookServiceIdRouteImport.update({
+  id: '/book/$serviceId',
+  path: '/book/$serviceId',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ProServicesAddRoute = ProServicesAddRouteImport.update({
   id: '/add',
   path: '/add',
@@ -159,6 +165,7 @@ export interface FileRoutesByFullPath {
   '/register': typeof RegisterRoute
   '/services': typeof ServicesRoute
   '/user': typeof UserRouteWithChildren
+  '/book/$serviceId': typeof BookServiceIdRoute
   '/pro/bookings': typeof ProBookingsRoute
   '/pro/notifications': typeof ProNotificationsRoute
   '/pro/profile': typeof ProProfileRoute
@@ -182,6 +189,7 @@ export interface FileRoutesByTo {
   '/providers': typeof ProvidersRoute
   '/register': typeof RegisterRoute
   '/services': typeof ServicesRoute
+  '/book/$serviceId': typeof BookServiceIdRoute
   '/pro/bookings': typeof ProBookingsRoute
   '/pro/notifications': typeof ProNotificationsRoute
   '/pro/profile': typeof ProProfileRoute
@@ -208,6 +216,7 @@ export interface FileRoutesById {
   '/register': typeof RegisterRoute
   '/services': typeof ServicesRoute
   '/user': typeof UserRouteWithChildren
+  '/book/$serviceId': typeof BookServiceIdRoute
   '/pro/bookings': typeof ProBookingsRoute
   '/pro/notifications': typeof ProNotificationsRoute
   '/pro/profile': typeof ProProfileRoute
@@ -235,6 +244,7 @@ export interface FileRouteTypes {
     | '/register'
     | '/services'
     | '/user'
+    | '/book/$serviceId'
     | '/pro/bookings'
     | '/pro/notifications'
     | '/pro/profile'
@@ -258,6 +268,7 @@ export interface FileRouteTypes {
     | '/providers'
     | '/register'
     | '/services'
+    | '/book/$serviceId'
     | '/pro/bookings'
     | '/pro/notifications'
     | '/pro/profile'
@@ -283,6 +294,7 @@ export interface FileRouteTypes {
     | '/register'
     | '/services'
     | '/user'
+    | '/book/$serviceId'
     | '/pro/bookings'
     | '/pro/notifications'
     | '/pro/profile'
@@ -309,6 +321,7 @@ export interface RootRouteChildren {
   RegisterRoute: typeof RegisterRoute
   ServicesRoute: typeof ServicesRoute
   UserRoute: typeof UserRouteWithChildren
+  BookServiceIdRoute: typeof BookServiceIdRoute
   ProviderIdRoute: typeof ProviderIdRoute
   ServiceIdRoute: typeof ServiceIdRoute
 }
@@ -469,6 +482,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProBookingsRouteImport
       parentRoute: typeof ProRoute
     }
+    '/book/$serviceId': {
+      id: '/book/$serviceId'
+      path: '/book/$serviceId'
+      fullPath: '/book/$serviceId'
+      preLoaderRoute: typeof BookServiceIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/pro/services/add': {
       id: '/pro/services/add'
       path: '/add'
@@ -539,19 +559,10 @@ const rootRouteChildren: RootRouteChildren = {
   RegisterRoute: RegisterRoute,
   ServicesRoute: ServicesRoute,
   UserRoute: UserRouteWithChildren,
+  BookServiceIdRoute: BookServiceIdRoute,
   ProviderIdRoute: ProviderIdRoute,
   ServiceIdRoute: ServiceIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
