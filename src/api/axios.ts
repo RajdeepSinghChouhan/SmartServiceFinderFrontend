@@ -34,6 +34,13 @@ api.interceptors.response.use(
 
     if (typeof window !== "undefined") {
       if (status === 401) {
+
+        if (error.config?.url?.includes("/auth/login")) {
+            toast.error(
+                error.response?.data?.message || "Invalid credentials"
+            );
+            return Promise.reject(error);
+        }
         storage.clearAuth();
         toast.error("Session expired. Please login again.");
         if (!window.location.pathname.startsWith("/login")) {

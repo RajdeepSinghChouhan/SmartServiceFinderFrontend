@@ -17,7 +17,7 @@ export const Route = createFileRoute("/pro")({
 const titleByPath: Record<string, { title: string; subtitle: string }> = {
   "/pro": { title: "Provider Dashboard", subtitle: "Overview of your business activity" },
   "/pro/services": { title: "My Services", subtitle: "All services you currently offer" },
-  "/pro/services/add": { title: "Add Service", subtitle: "Create a new service listing" },
+  "/pro/add-service": { title: "Add Service", subtitle: "Create a new service listing" },
   "/pro/bookings": { title: "Bookings", subtitle: "Manage incoming customer requests" },
   "/pro/reviews": { title: "Reviews", subtitle: "Customer feedback on your services" },
   "/pro/notifications": { title: "Notifications", subtitle: "Activity updates for your account" },
@@ -29,16 +29,19 @@ function ProviderDashboardLayout() {
   const navigate = useNavigate();
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const [mobileOpen, setMobileOpen] = useState(false);
-
   useEffect(() => {
-    if (!isAuthenticated) navigate({ to: "/login" });
-    else if (user?.role !== "PROVIDER") navigate({ to: "/403" });
-  }, [isAuthenticated, user, navigate]);
+    if (user === null) return;
 
+    if (!isAuthenticated) {
+      navigate({ to: "/login" });
+    } else if (user.role !== "PROVIDER") {
+      navigate({ to: "/403" });
+    }
+  }, [user, isAuthenticated, navigate]);
+
+  if (user === null) return null;
+  
   useEffect(() => { setMobileOpen(false); }, [pathname]);
-
-  if (!isAuthenticated || user?.role !== "PROVIDER") return null;
-
   const head = titleByPath[pathname] || { title: "Provider Dashboard", subtitle: "" };
 
   return (

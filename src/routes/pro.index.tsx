@@ -2,28 +2,126 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { Briefcase, Calendar, CheckCircle2, Star, Clock, MessageSquare } from "lucide-react";
 import StatsCard from "../components/StatsCard";
 import StatusBadge from "../components/StatusBadge";
-import { providerBookings, providerServices, providerReviews } from "../data/providerMock";
+import { useEffect, useState } from "react";
+import { toast } from "sonner";
+
+import { bookingApi } from "../api/bookingApi";
+import { serviceApi } from "../api/serviceApi";
+import { reviewApi } from "../api/reviewApi";
+import { providerApi } from "../api/providerApi";
+
 
 export const Route = createFileRoute("/pro/")({
   component: ProviderHome,
 });
 
 function ProviderHome() {
-  const totalServices = providerServices.length;
-  const activeServices = providerServices.filter((s) => s.available).length;
-  const pending = providerBookings.filter((b) => b.status === "PENDING").length;
-  const completed = providerBookings.filter((b) => b.status === "COMPLETED").length;
-  const avgRating = providerReviews.length
-    ? (providerReviews.reduce((s, r) => s + r.rating, 0) / providerReviews.length).toFixed(1)
+  const [services, setServices] = useState<any[]>([]);
+  const [bookings, setBookings] = useState<any[]>([]);
+  const [reviews, setReviews] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString("en-IN", {
+      day: "numeric",
+      month: "short",
+      year: "numeric",
+    });
+  };
+
+  const formatTime = (time: string) => {
+    const [hours, minutes] = time.split(":");
+
+    return new Date(
+      2000,
+      0,
+      1,
+      Number(hours),
+      Number(minutes)
+    ).toLocaleTimeString("en-IN", {
+      hour: "numeric",
+      minute: "2-digit",
+      hour12: true,
+    });
+  };
+
+  const formatDateTime = (dateTime: string) => {
+    return new Date(dateTime).toLocaleString("en-IN", {
+      day: "numeric",
+      month: "short",
+      year: "numeric",
+      hour: "numeric",
+      minute: "2-digit",
+      hour12: true,
+      timeZone: "Asia/Kolkata",
+    });
+  };
+
+  const totalServices = services.length;
+  const activeServices = services.filter(
+    (s) => s.available === true
+  ).length;
+  const pending = bookings.filter(
+    (b) => b.status === "PENDING"
+  ).length;
+  const completed = bookings.filter(
+    (b) => b.status === "COMPLETED"
+  ).length;
+  const avgRating = reviews.length
+
+    ? (reviews.reduce((s, r) => s + r.rating, 0) / reviews.length).toFixed(1)
     : "0.0";
 
-  const recentBookings = [...providerBookings]
-    .sort((a, b) => b.createdAt.localeCompare(a.createdAt))
+  const recentBookings = [...bookings]
+    .sort(
+      (a, b) =>
+        new Date(b.createdAt).getTime() -
+        new Date(a.createdAt).getTime()
+    )
     .slice(0, 4);
-  const recentReviews = [...providerReviews]
-    .sort((a, b) => b.createdAt.localeCompare(a.createdAt))
+  const recentReviews = [...reviews]
+    .sort(
+      (a, b) =>
+        new Date(b.createdAt).getTime() -
+        new Date(a.createdAt).getTime()
+    )
     .slice(0, 3);
 
+    const loadDashboardData = async () => {
+      try 
+      {
+        const providerId = await providerApi.getId();
+
+        if (!providerId) {
+          toast.error("Provider ID not found");
+          setLoading(false);
+          return;
+        }
+
+        const [serviceData, bookingData, reviewData] =
+          await Promise.all([
+            serviceApi.mine(),
+            bookingApi.provider(),
+            reviewApi.byProvider(providerId),
+          ]);
+          
+          setServices(serviceData);
+          setBookings(bookingData);
+          setReviews(reviewData);
+      } catch (error) {
+        console.error(error);
+        toast.error("Failed to load dashboard");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    useEffect(() => {
+    loadDashboardData();
+  }, []);
+
+  if (loading) {
+    return <div>Loading dashboard...</div>;
+  }
   return (
     <div>
       <div className="row g-3 mb-4">
@@ -49,7 +147,9 @@ function ProviderHome() {
                     <div className="d-flex justify-content-between align-items-start gap-2">
                       <div>
                         <div className="fw-semibold">{b.serviceTitle}</div>
-                        <div className="small text-secondary">{b.customerName} · {b.bookingDate} {b.bookingTime}</div>
+                        <div className="small text-secondary">
+                          {b.username} | {formatDate(b.bookingDate)} | {formatTime(b.bookingTime)}
+                        </div>
                       </div>
                       <StatusBadge status={b.status} />
                     </div>
@@ -73,10 +173,11 @@ function ProviderHome() {
                 {recentReviews.map((r) => (
                   <div key={r.reviewId} className="ssf-list-row">
                     <div className="d-flex justify-content-between align-items-center">
-                      <div className="fw-semibold">{r.userName}</div>
-                      <div className="small" style={{ color: "#fbbf24" }}>{"★".repeat(r.rating)}<span className="text-secondary">{"★".repeat(5 - r.rating)}</span></div>
+                      <div className="fw-semibold">{r.username}</div>
                     </div>
-                    <div className="small text-secondary">{r.serviceTitle} · {r.createdAt}</div>
+                    <div className="small text-secondary">
+                      {r.serviceTitle} | {formatDateTime(r.createdAt)}
+                    </div>
                     <p className="small mb-0 mt-1">{r.comment}</p>
                   </div>
                 ))}

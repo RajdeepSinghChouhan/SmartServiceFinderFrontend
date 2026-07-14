@@ -2,15 +2,14 @@ import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { toast } from "sonner";
 import { ArrowLeft, Save } from "lucide-react";
-import { providerProfile } from "../data/providerMock";
+import { serviceApi } from "@/api/serviceApi";
 
-export const Route = createFileRoute("/pro/services/add")({
+export const Route = createFileRoute("/pro/add-service")({
   component: AddService,
 });
 
 function AddService() {
   const navigate = useNavigate();
-  const providerId = providerProfile.id;
 
   const [form, setForm] = useState({
     title: "",
@@ -32,15 +31,34 @@ function AddService() {
     return Object.keys(e).length === 0;
   };
 
-  const submit = (ev: React.FormEvent) => {
+  const submit = async (ev: React.FormEvent) => {
     ev.preventDefault();
+
     if (!validate()) return;
-    setSaving(true);
-    setTimeout(() => {
-      setSaving(false);
+
+    try {
+      setSaving(true);
+
+      await serviceApi.create({
+        title: form.title,
+        description: form.description,
+        price: Number(form.price),
+        categoryId: Number(form.categoryId),
+        available: form.available,
+      });
+
       toast.success("Service added successfully");
-      navigate({ to: "/pro/services" });
-    }, 600);
+
+      navigate({
+        to: "/pro/services",
+      });
+
+    } catch (error) {
+      console.error(error);
+      toast.error("Failed to create service");
+    } finally {
+      setSaving(false);
+    }
   };
 
   return (
@@ -81,11 +99,6 @@ function AddService() {
             <input className="form-check-input" type="checkbox" id="avail"
               checked={form.available} onChange={(e) => setForm({ ...form, available: e.target.checked })} />
             <label className="form-check-label small" htmlFor="avail">Available for booking</label>
-          </div>
-
-          <div className="alert alert-info mt-3 mb-0 small">
-            Provider ID <strong>#{providerId}</strong> will be attached automatically.
-            Note: services are immutable after creation — review carefully before submitting.
           </div>
 
           <div className="d-flex gap-2 justify-content-end mt-4">

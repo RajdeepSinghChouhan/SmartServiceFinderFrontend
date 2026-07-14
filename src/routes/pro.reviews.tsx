@@ -1,6 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Star, MessageSquare } from "lucide-react";
-import { providerReviews } from "../data/providerMock";
+import { useEffect, useState } from "react";
+import { reviewApi } from "../api/reviewApi";
+import { providerApi } from "../api/providerApi";
 
 export const Route = createFileRoute("/pro/reviews")({
   component: ProviderReviews,
@@ -18,8 +20,56 @@ function StarRow({ rating }: { rating: number }) {
 }
 
 function ProviderReviews() {
-  const reviews = providerReviews;
-  const avg = reviews.length ? reviews.reduce((s, r) => s + r.rating, 0) / reviews.length : 0;
+    const [reviews, setReviews] = useState<any[]>([]);
+    const [avg, setAvg] = useState(0);
+    const [loading, setLoading] = useState(true);
+
+    const formatDate = (dateString: string) => {
+      return new Date(dateString).toLocaleString("en-IN", {
+        weekday: "long",
+        day: "numeric",
+        month: "short",
+        year: "numeric",
+        hour: "numeric",
+        minute: "2-digit",
+        hour12: true,
+      });
+    };
+    const fetchReviews = async () => {
+      try {
+        const providerId = await providerApi.getId(); // Get provider id
+
+        const reviewData = await reviewApi.byProvider(providerId);
+        
+        const sortedReviews = [...reviewData].sort(
+          (a, b) =>
+            new Date(b.createdAt).getTime() -
+            new Date(a.createdAt).getTime()
+        );
+
+        setReviews(sortedReviews);
+
+        const avgRating =
+          reviewData.length > 0
+            ? reviewData.reduce((sum: number, r: any) => sum + r.rating, 0) / reviewData.length
+            : 0;
+
+        setAvg(avgRating);
+
+      } catch (error) {
+        console.error("Error fetching reviews:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    useEffect(() => {
+      fetchReviews();
+    }, []);
+
+    if (loading) {
+      return <div>Loading reviews...</div>;
+    }
 
   return (
     <div>
@@ -49,13 +99,15 @@ function ProviderReviews() {
             <div key={r.reviewId} className="ssf-card p-3">
               <div className="d-flex justify-content-between align-items-start flex-wrap gap-2">
                 <div>
-                  <div className="fw-semibold">{r.userName} <span className="text-secondary small">· User #{r.userId}</span></div>
-                  <div className="small text-secondary">{r.serviceTitle} · Service #{r.serviceId}</div>
+                  <div className="fw-semibold">{r.username} <span className="text-secondary small">UserId: {r.userId}</span></div>
+                  <div className="small text-secondary">{r.serviceTitle} | ServiceId: {r.serviceId}</div>
                 </div>
                 <StarRow rating={r.rating} />
               </div>
               <p className="mb-1 mt-2">{r.comment}</p>
-              <div className="small text-secondary">{r.createdAt}</div>
+              <div className="small text-secondary">
+                {formatDate(r.createdAt)}
+              </div>
             </div>
           ))}
         </div>

@@ -1,7 +1,10 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import { Search, Star, Filter, SearchX } from "lucide-react";
-import { services, categories } from "../data/mock";
+import { categories } from "../data/mock"; // keep only if categories are still local
+import { services as mockServices } from "../data/mock";
+import { serviceApi } from "../api/serviceApi";
+import { useEffect } from "react";
 
 export const Route = createFileRoute("/services")({
   head: () => ({
@@ -24,6 +27,12 @@ function ServicesPage() {
   const [sort, setSort] = useState<"newest" | "price-asc" | "price-desc">("newest");
   const [page, setPage] = useState(1);
 
+  const [services, setServices] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  const isLoggedIn = !!localStorage.getItem("token");
+
   const filtered = useMemo(() => {
     let list = services.filter((s) => s.title.toLowerCase().includes(q.toLowerCase()));
     if (cat !== "all") list = list.filter((s) => s.categoryId === cat);
@@ -33,11 +42,58 @@ function ServicesPage() {
     if (sort === "price-desc") list = [...list].sort((a, b) => b.price - a.price);
     if (sort === "newest") list = [...list].sort((a, b) => b.createdAt.localeCompare(a.createdAt));
     return list;
-  }, [q, cat, avail, sort]);
+  }, [services, q, cat, avail, sort]);
 
   const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
   const safePage = Math.min(page, totalPages);
   const pageItems = filtered.slice((safePage - 1) * PAGE_SIZE, safePage * PAGE_SIZE);
+
+
+  useEffect(() => {
+    const fetchServices = async () => {
+      try {
+        setLoading(true);
+
+        if (!isLoggedIn) {
+        // Use mock data for guests
+        setServices(mockServices);
+        return;
+      }
+
+      // Logged-in users get real data
+      const data = await serviceApi.list();
+
+        setServices(data);
+      } catch (err) {
+
+        console.error(err);
+        // Optional fallback to mock data if API fails
+        setServices(mockServices);
+
+        setError("Failed to load services. Please try again later."); 
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchServices();
+  }, [isLoggedIn]);
+
+  if (loading) {
+    return (
+      <div className="container py-5 text-center">
+        <h4>Loading services...</h4>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="container py-5 text-center text-danger">
+        {error}
+      </div>
+    );
+  }
 
   return (
     <>
@@ -100,7 +156,7 @@ function ServicesPage() {
               ) : (
                 <div className="row g-4">
                   {pageItems.map((s) => (
-                    <div className="col-md-6" key={s.id}>
+                    <div className="col-md-6" key={s.serviceId}>
                       <div className="ssf-card">
                         <div className="ssf-card-body">
                           <div className="d-flex justify-content-between align-items-start mb-2">
@@ -116,8 +172,8 @@ function ServicesPage() {
                             <small className="text-secondary">Added {new Date(s.createdAt).toLocaleDateString()}</small>
                           </div>
                           <div className="d-flex gap-2">
-                            <Link to="/service/$id" params={{ id: String(s.id) }} className="btn btn-ssf-ghost flex-fill">Details</Link>
-                            <Link to="/service/$id" params={{ id: String(s.id) }} className="btn btn-ssf-primary flex-fill">Book Now</Link>
+                            <Link to="/service/$id" params={{ id: String(s.serviceId) }} className="btn btn-ssf-ghost flex-fill">Details</Link>
+                            <Link to="/service/$id" params={{ id: String(s.serviceId) }} className="btn btn-ssf-primary flex-fill">Book Now</Link>
                           </div>
                         </div>
                       </div>

@@ -1,6 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
+import axios from "axios";
+import { API_BASE_URL, API_PATHS } from "../utils/constants";
+import { userApi } from "../api/userApi";
+
 import { useAuth } from "../context/AuthContext";
 
 export const Route = createFileRoute("/user/profile")({
@@ -18,24 +22,83 @@ function ProfilePage() {
   });
   const [saving, setSaving] = useState(false);
 
+  useEffect(() => {
+    loadProfile();
+  }, []);
+
   const set = (k: keyof typeof form, v: string) => setForm((f) => ({ ...f, [k]: v }));
 
-  const submit = (e: React.FormEvent) => {
+  const loadProfile = async () => {
+    try {
+      const userId = localStorage.getItem("userId");
+
+      if (!userId) return;
+
+      const userData = await userApi.me(userId);
+
+      setForm({
+        username: userData.username,
+        fullName: userData.fullName,
+        email: userData.email,
+        phone: userData.phone,
+        address: userData.address,
+      });
+
+      updateProfile(userData);
+    } catch (err) {
+      console.error(err);
+      toast.error("Failed to load profile");
+    }
+  };
+  const submit = async (e: React.FormEvent) => {
     e.preventDefault();
+
     if (!form.fullName.trim() || !form.email.trim()) {
       toast.error("Full name and email are required");
       return;
     }
+
     if (!/^\S+@\S+\.\S+$/.test(form.email)) {
       toast.error("Please enter a valid email");
       return;
     }
+
     setSaving(true);
-    setTimeout(() => {
-      updateProfile(form);
-      setSaving(false);
+
+    try {
+
+      console.log("Update Path:", API_PATHS.user.update);
+      console.log("Base URL:", API_BASE_URL);
+      // Send request to backend
+      const updatedUser = await userApi.update(form);
+
+      // Update AuthContext and localStorage
+      updateProfile(updatedUser);
+
       toast.success("Profile updated");
-    }, 500);
+    } catch (err) {
+      const networkOrNotFound =
+        axios.isAxiosError(err) &&
+        (!err.response || err.response.status === 404);
+
+      if (networkOrNotFound) {
+        toast.success("Profile updated (offline demo mode)");
+
+        // Update only frontend state
+        updateProfile(form);
+
+        return;
+      }
+
+      console.error(err);
+
+      // Other Axios errors are already handled by your interceptor
+      if (!axios.isAxiosError(err)) {
+        toast.error("Failed to update profile");
+      }
+    } finally {
+      setSaving(false);
+    }
   };
 
   return (

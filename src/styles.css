@@ -578,7 +578,7 @@ hr { border-color: var(--ssf-border); }
   text-transform: uppercase;
 }
 .ssf-status.pending    { background: rgba(245, 158, 11, 0.18); color: #fbbf24; }
-.ssf-status.confirmed  { background: rgba(59, 130, 246, 0.18); color: #93c5fd; }
+.ssf-status.accepted   { background: rgba(59, 130, 246, 0.18); color: #93c5fd; }
 .ssf-status.completed  { background: rgba(16, 185, 129, 0.18); color: #6ee7b7; }
 .ssf-status.cancelled  { background: rgba(148, 163, 184, 0.22); color: #cbd5e1; }
 .ssf-status.rejected   { background: rgba(239, 68, 68, 0.18); color: #fca5a5; }
@@ -871,7 +871,7 @@ hr { border-color: var(--ssf-border); }
 
 /* Status badges — darker text for contrast on light translucent backgrounds */
 [data-theme="light"] .ssf-status.pending    { background: rgba(245, 158, 11, 0.18); color: #b45309; }
-[data-theme="light"] .ssf-status.confirmed  { background: rgba(37, 99, 235, 0.14);  color: #1d4ed8; }
+[data-theme="light"] .ssf-status.accepted   { background: rgba(37, 99, 235, 0.14);  color: #1d4ed8; }
 [data-theme="light"] .ssf-status.completed  { background: rgba(16, 185, 129, 0.16); color: #047857; }
 [data-theme="light"] .ssf-status.cancelled  { background: rgba(100, 116, 139, 0.18); color: #475569; }
 [data-theme="light"] .ssf-status.rejected   { background: rgba(239, 68, 68, 0.14);  color: #b91c1c; }

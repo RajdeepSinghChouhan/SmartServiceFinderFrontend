@@ -4,6 +4,7 @@ export const API_BASE_URL =
   (typeof import.meta !== "undefined" && (import.meta as any).env?.VITE_API_BASE_URL) ||
   "http://localhost:8080";
 
+  //http://localhost:8080
 export const STORAGE_KEYS = {
   token: "token",
   userId: "userId",
@@ -19,7 +20,7 @@ export const ROLES = {
 
 export const BOOKING_STATUS = {
   PENDING: "PENDING",
-  CONFIRMED: "CONFIRMED",
+  ACCEPTED: "ACCEPTED",
   COMPLETED: "COMPLETED",
   REJECTED: "REJECTED",
   CANCELLED: "CANCELLED",
@@ -47,18 +48,21 @@ export const API_PATHS = {
   },
   provider: {
     create: "/provider/data",
-    list: "/provider/data",
+    me: "/provider/data",
     update: "/provider/data",
     delete: "/provider/data",
     getId: "/provider/getId",
+    all: "/provider/all",
+    byId: (id: number | string) => `/provider/data/${id}`,
   },
   service: {
-    create: "/service/data",
-    list: "/service/data",
-    mine: "/service/data/my-services",
-    byId: (id: number | string) => `/service/data/${id}`,
-    delete: (id: number | string) => `/service/data/${id}`,
-    byProvider: (id: number | string) => `/service/provider/${id}`,
+    create: "/services/data",
+    list: "/services/data",
+    mine: "/services/data/my-services",
+    update: (id: number | string) => `/services/data/${id}`,
+    byId: (id: number | string) => `/services/data/${id}`,
+    delete: (id: number | string) => `/services/data/${id}`,
+    byProvider: (id: number | string) => `/services/provider-services/${id}`,
   },
   booking: {
     create: "/booking/data",
@@ -71,20 +75,20 @@ export const API_PATHS = {
     completed: (id: number | string) => `/booking/${id}/completed`,
   },
   review: {
-    create: "/review/data",
-    byProvider: (id: number | string) => `/review/provider/${id}`,
-    mine: "/review/my",
-    byService: (id: number | string) => `/review/service/${id}`,
-    update: (id: number | string) => `/review/update/${id}`,
-    delete: (id: number | string) => `/review/delete/${id}`,
-    avg: (id: number | string) => `/review/provider/${id}/average-rating`,
-    count: (id: number | string) => `/review/provider/${id}/count`,
+    create: "/reviews/data",
+    byProvider: (id: number | string) => `/reviews/provider/${id}`,
+    mine: "/reviews/my",
+    byService: (id: number | string) => `/reviews/service/${id}`,
+    update: (id: number | string) => `/reviews/update/${id}`,
+    delete: (id: number | string) => `/reviews/delete/${id}`,
+    avg: (id: number | string) => `/reviews/provider/${id}/average-rating`,
+    count: (id: number | string) => `/reviews/provider/${id}/count`,
   },
   notification: {
-    list: (userId: number | string) => `/notification/user/${userId}`,
-    unread: (userId: number | string) => `/notification/user/${userId}/unread-count`,
-    read: (id: number | string) => `/notification/${id}/read`,
-    delete: (id: number | string) => `/notification/${id}`,
-    retry: "/notification/retry-failed",
+    list: (userId: number | string) => `/notifications/user/${userId}`,
+    unread: (userId: number | string) => `/notifications/user/${userId}/unread-count`,
+    read: (id: number | string) => `/notifications/${id}/read`,
+    delete: (id: number | string) => `/notifications/${id}`,
+    retry: "/notifications/retry-failed",
   },
 } as const;

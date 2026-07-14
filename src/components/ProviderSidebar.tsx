@@ -5,7 +5,7 @@ import { useAuth } from "../context/AuthContext";
 const items = [
   { to: "/pro", label: "Dashboard", icon: LayoutDashboard, exact: true },
   { to: "/pro/services", label: "My Services", icon: Briefcase },
-  { to: "/pro/services/add", label: "Add Service", icon: PlusCircle },
+  { to: "/pro/add-service", label: "Add Service", icon: PlusCircle },
   { to: "/pro/bookings", label: "Bookings", icon: Calendar },
   { to: "/pro/reviews", label: "Reviews", icon: Star },
   { to: "/pro/notifications", label: "Notifications", icon: Bell },

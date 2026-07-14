@@ -3,7 +3,7 @@ import { Star } from "lucide-react";
 
 export default function ReviewModal({
   open, onClose, onSubmit, serviceTitle, initialRating = 5, initialComment = "",
-  title = "Write a Review",
+  title = "Write a Review", loading = false,
 }: {
   open: boolean;
   onClose: () => void;
@@ -12,6 +12,7 @@ export default function ReviewModal({
   initialRating?: number;
   initialComment?: string;
   title?: string;
+  loading?: boolean;
 }) {
   const [rating, setRating] = useState(initialRating);
   const [comment, setComment] = useState(initialComment);
@@ -55,12 +56,20 @@ export default function ReviewModal({
         />
 
         <div className="d-flex gap-2 justify-content-end">
-          <button className="btn btn-ssf-ghost" onClick={onClose}>Cancel</button>
+          <button
+            className="btn btn-ssf-ghost"
+            onClick={onClose}
+            disabled={loading}
+          >
+            Cancel
+          </button>
           <button
             className="btn btn-ssf-primary"
-            disabled={!comment.trim()}
+            disabled={!comment.trim() || loading}
             onClick={() => onSubmit({ rating, comment: comment.trim() })}
-          >Submit Review</button>
+          >
+            {loading ? "Submitting..." : "Submit Review"}
+          </button>
         </div>
       </div>
     </div>

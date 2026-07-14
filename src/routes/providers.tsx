@@ -1,7 +1,11 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useState } from "react";
 import { Star, Search, Briefcase } from "lucide-react";
 import { providers } from "../data/mock";
+import { useEffect, useState } from "react";
+import { providers as mockProviders } from "../data/mock";
+import { STORAGE_KEYS } from "../utils/constants";
+import { providerApi } from "../api/providerApi";
+import { reviewApi } from "../api/reviewApi";
 
 export const Route = createFileRoute("/providers")({
   head: () => ({
@@ -17,8 +21,69 @@ export const Route = createFileRoute("/providers")({
 
 function ProvidersPage() {
   const [q, setQ] = useState("");
-  const list = providers.filter((p) => p.businessName.toLowerCase().includes(q.toLowerCase()));
+  const [providerList, setProviderList] = useState(mockProviders);
+  const [loading, setLoading] = useState(true);
+  const list = providerList.filter((p) => p.businessName.toLowerCase().includes(q.toLowerCase()));
 
+  const isLoggedIn = !!localStorage.getItem(STORAGE_KEYS.token);
+
+  useEffect(() => {
+    const loadProviders = async () => {
+      try {
+        setLoading(true);
+
+        if (!isLoggedIn) {
+          setProviderList(mockProviders);
+          return;
+        }
+
+        const data = await providerApi.all()
+
+        const providersWithRatings = await Promise.all(
+          data.map(async (provider: any) => {
+            try {
+              const [rating, reviewCount] = await Promise.all([
+                reviewApi.averageRating(provider.id),
+                reviewApi.count(provider.id),
+              ]);
+
+              return {
+                ...provider,
+                rating: rating ?? 0,
+                reviewCount: reviewCount ?? 0,
+              };
+            } catch {
+              return {
+                ...provider,
+                rating: 0,
+                reviewCount: 0,
+              };
+            }
+          })
+        );
+
+        setProviderList(providersWithRatings);
+        
+      } catch (error) {
+        console.error(error);
+
+        // fallback to mock data
+        setProviderList(mockProviders);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadProviders();
+  }, [isLoggedIn]);
+
+  if (loading) {
+    return (
+      <div className="container py-5 text-center">
+        <h4>Loading providers...</h4>
+      </div>
+    );
+  }
   return (
     <>
       <div className="ssf-detail-hero">
@@ -46,7 +111,8 @@ function ProvidersPage() {
                       <div className="ssf-avatar">{p.businessName.split(" ").map((w) => w[0]).slice(0, 2).join("")}</div>
                       <div>
                         <h6 className="mb-1">{p.businessName}</h6>
-                        <div className="ssf-stars"><Star size={14} fill="#fbbf24" stroke="#fbbf24" /> <span className="ms-1 small fw-semibold text-dark">{p.rating}</span> <span className="ms-1 small text-secondary">({p.reviewCount})</span></div>
+                        <div className="ssf-stars">
+                          <Star size={14} fill="#fbbf24" stroke="#fbbf24" />{p.reviewCount > 0 ? (<><span className="ms-1 small fw-semibold text-dark">{Number(p.rating).toFixed(1)}</span><span className="ms-1 small text-secondary">({p.reviewCount})</span></>) : (<span className="ms-1 small text-secondary">No reviews yet</span>)}</div>
                       </div>
                     </div>
                     <p className="ssf-card-text">{p.description}</p>

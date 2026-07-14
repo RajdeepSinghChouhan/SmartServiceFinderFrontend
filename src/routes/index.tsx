@@ -56,7 +56,7 @@ function HomePage() {
                 {filteredQuick.length > 0 && (
                   <div className="position-absolute bg-white shadow rounded-3 mt-2 p-2" style={{ top: "100%", left: 0, right: 0, zIndex: 10 }}>
                     {filteredQuick.map((s) => (
-                      <Link key={s.id} to="/service/$id" params={{ id: String(s.id) }} className="d-block p-2 rounded text-decoration-none text-dark" style={{ transition: "background 0.15s" }}>
+                      <Link key={s.serviceId} to="/service/$id" params={{ id: String(s.serviceId) }} className="d-block p-2 rounded text-decoration-none text-dark" style={{ transition: "background 0.15s" }}>
                         <Search size={14} className="me-2 text-secondary" /> {s.title}
                       </Link>
                     ))}
@@ -89,7 +89,7 @@ function HomePage() {
                 <div className="ssf-info-card mt-3" style={{ marginRight: "30%" }}>
                   <div className="d-flex align-items-center justify-content-between">
                     <div>
-                      <small className="text-secondary">Booking confirmed</small>
+                      <small className="text-secondary">Booking Accepted</small>
                       <div className="fw-bold">AC Cleaning ✓</div>
                     </div>
                     <div className="ssf-category-icon" style={{ width: 44, height: 44, marginBottom: 0 }}>
@@ -137,7 +137,7 @@ function HomePage() {
           </div>
           <div className="row g-4">
             {featuredServices.map((s) => (
-              <div className="col-md-6 col-lg-4" key={s.id}>
+              <div className="col-md-6 col-lg-4" key={s.serviceId}>
                 <ServiceCardHome service={s} />
               </div>
             ))}
@@ -164,7 +164,7 @@ function HomePage() {
                     <h6 className="ssf-card-title">{p.businessName}</h6>
                     <div className="ssf-stars justify-content-center mb-2"><Star size={14} fill="#fbbf24" /> <span className="ms-1 small fw-semibold text-dark">{p.rating}</span> <span className="ms-1 small text-secondary">({p.reviewCount})</span></div>
                     <p className="ssf-card-text">{p.description.slice(0, 80)}…</p>
-                    <Link to="/provider/$id" params={{ id: String(p.id) }} className="btn btn-ssf-outline w-100">View Profile</Link>
+                    <Link to="/providers" className="btn btn-ssf-outline w-100">View Profile</Link>
                   </div>
                 </div>
               </div>
@@ -260,7 +260,6 @@ function ServiceCardHome({ service }: { service: typeof services[number] }) {
     <div className="ssf-card">
       <div className="ssf-card-body">
         <div className="d-flex justify-content-between align-items-start mb-2">
-          <span className="ssf-badge ssf-badge-price">{service.categoryName}</span>
           <span className={`ssf-badge ${service.available ? "ssf-badge-available" : "ssf-badge-unavailable"}`}>
             {service.available ? "Available" : "Unavailable"}
           </span>
@@ -272,8 +271,8 @@ function ServiceCardHome({ service }: { service: typeof services[number] }) {
           <div className="ssf-stars"><Star size={14} fill="#fbbf24" stroke="#fbbf24" /> <span className="ms-1 small fw-semibold text-dark">4.8</span></div>
         </div>
         <div className="d-flex gap-2">
-          <Link to="/service/$id" params={{ id: String(service.id) }} className="btn btn-ssf-ghost flex-fill">Details</Link>
-          <Link to="/service/$id" params={{ id: String(service.id) }} className="btn btn-ssf-primary flex-fill">Book Now</Link>
+          <Link to="/services"  className="btn btn-ssf-ghost flex-fill">Details</Link>
+          <Link to="/services" className="btn btn-ssf-primary flex-fill">Book Now</Link>
         </div>
       </div>
     </div>

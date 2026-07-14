@@ -31,7 +31,9 @@ import { Route as ProReviewsRouteImport } from './routes/pro.reviews'
 import { Route as ProProfileRouteImport } from './routes/pro.profile'
 import { Route as ProNotificationsRouteImport } from './routes/pro.notifications'
 import { Route as ProBookingsRouteImport } from './routes/pro.bookings'
-import { Route as ProServicesAddRouteImport } from './routes/pro.services.add'
+import { Route as ProAddServiceRouteImport } from './routes/pro.add-service'
+import { Route as BookingServiceIdRouteImport } from './routes/booking.$serviceId'
+import { Route as ProEditServiceServiceIdRouteImport } from './routes/pro.edit-service.$serviceId'
 
 const UserRoute = UserRouteImport.update({
   id: '/user',
@@ -143,10 +145,20 @@ const ProBookingsRoute = ProBookingsRouteImport.update({
   path: '/bookings',
   getParentRoute: () => ProRoute,
 } as any)
-const ProServicesAddRoute = ProServicesAddRouteImport.update({
-  id: '/add',
-  path: '/add',
-  getParentRoute: () => ProServicesRoute,
+const ProAddServiceRoute = ProAddServiceRouteImport.update({
+  id: '/add-service',
+  path: '/add-service',
+  getParentRoute: () => ProRoute,
+} as any)
+const BookingServiceIdRoute = BookingServiceIdRouteImport.update({
+  id: '/booking/$serviceId',
+  path: '/booking/$serviceId',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProEditServiceServiceIdRoute = ProEditServiceServiceIdRouteImport.update({
+  id: '/edit-service/$serviceId',
+  path: '/edit-service/$serviceId',
+  getParentRoute: () => ProRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
@@ -159,11 +171,13 @@ export interface FileRoutesByFullPath {
   '/register': typeof RegisterRoute
   '/services': typeof ServicesRoute
   '/user': typeof UserRouteWithChildren
+  '/booking/$serviceId': typeof BookingServiceIdRoute
+  '/pro/add-service': typeof ProAddServiceRoute
   '/pro/bookings': typeof ProBookingsRoute
   '/pro/notifications': typeof ProNotificationsRoute
   '/pro/profile': typeof ProProfileRoute
   '/pro/reviews': typeof ProReviewsRoute
-  '/pro/services': typeof ProServicesRouteWithChildren
+  '/pro/services': typeof ProServicesRoute
   '/provider/$id': typeof ProviderIdRoute
   '/service/$id': typeof ServiceIdRoute
   '/user/bookings': typeof UserBookingsRoute
@@ -172,7 +186,7 @@ export interface FileRoutesByFullPath {
   '/user/reviews': typeof UserReviewsRoute
   '/pro/': typeof ProIndexRoute
   '/user/': typeof UserIndexRoute
-  '/pro/services/add': typeof ProServicesAddRoute
+  '/pro/edit-service/$serviceId': typeof ProEditServiceServiceIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -182,11 +196,13 @@ export interface FileRoutesByTo {
   '/providers': typeof ProvidersRoute
   '/register': typeof RegisterRoute
   '/services': typeof ServicesRoute
+  '/booking/$serviceId': typeof BookingServiceIdRoute
+  '/pro/add-service': typeof ProAddServiceRoute
   '/pro/bookings': typeof ProBookingsRoute
   '/pro/notifications': typeof ProNotificationsRoute
   '/pro/profile': typeof ProProfileRoute
   '/pro/reviews': typeof ProReviewsRoute
-  '/pro/services': typeof ProServicesRouteWithChildren
+  '/pro/services': typeof ProServicesRoute
   '/provider/$id': typeof ProviderIdRoute
   '/service/$id': typeof ServiceIdRoute
   '/user/bookings': typeof UserBookingsRoute
@@ -195,7 +211,7 @@ export interface FileRoutesByTo {
   '/user/reviews': typeof UserReviewsRoute
   '/pro': typeof ProIndexRoute
   '/user': typeof UserIndexRoute
-  '/pro/services/add': typeof ProServicesAddRoute
+  '/pro/edit-service/$serviceId': typeof ProEditServiceServiceIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -208,11 +224,13 @@ export interface FileRoutesById {
   '/register': typeof RegisterRoute
   '/services': typeof ServicesRoute
   '/user': typeof UserRouteWithChildren
+  '/booking/$serviceId': typeof BookingServiceIdRoute
+  '/pro/add-service': typeof ProAddServiceRoute
   '/pro/bookings': typeof ProBookingsRoute
   '/pro/notifications': typeof ProNotificationsRoute
   '/pro/profile': typeof ProProfileRoute
   '/pro/reviews': typeof ProReviewsRoute
-  '/pro/services': typeof ProServicesRouteWithChildren
+  '/pro/services': typeof ProServicesRoute
   '/provider/$id': typeof ProviderIdRoute
   '/service/$id': typeof ServiceIdRoute
   '/user/bookings': typeof UserBookingsRoute
@@ -221,7 +239,7 @@ export interface FileRoutesById {
   '/user/reviews': typeof UserReviewsRoute
   '/pro/': typeof ProIndexRoute
   '/user/': typeof UserIndexRoute
-  '/pro/services/add': typeof ProServicesAddRoute
+  '/pro/edit-service/$serviceId': typeof ProEditServiceServiceIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -235,6 +253,8 @@ export interface FileRouteTypes {
     | '/register'
     | '/services'
     | '/user'
+    | '/booking/$serviceId'
+    | '/pro/add-service'
     | '/pro/bookings'
     | '/pro/notifications'
     | '/pro/profile'
@@ -248,7 +268,7 @@ export interface FileRouteTypes {
     | '/user/reviews'
     | '/pro/'
     | '/user/'
-    | '/pro/services/add'
+    | '/pro/edit-service/$serviceId'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -258,6 +278,8 @@ export interface FileRouteTypes {
     | '/providers'
     | '/register'
     | '/services'
+    | '/booking/$serviceId'
+    | '/pro/add-service'
     | '/pro/bookings'
     | '/pro/notifications'
     | '/pro/profile'
@@ -271,7 +293,7 @@ export interface FileRouteTypes {
     | '/user/reviews'
     | '/pro'
     | '/user'
-    | '/pro/services/add'
+    | '/pro/edit-service/$serviceId'
   id:
     | '__root__'
     | '/'
@@ -283,6 +305,8 @@ export interface FileRouteTypes {
     | '/register'
     | '/services'
     | '/user'
+    | '/booking/$serviceId'
+    | '/pro/add-service'
     | '/pro/bookings'
     | '/pro/notifications'
     | '/pro/profile'
@@ -296,7 +320,7 @@ export interface FileRouteTypes {
     | '/user/reviews'
     | '/pro/'
     | '/user/'
-    | '/pro/services/add'
+    | '/pro/edit-service/$serviceId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -309,6 +333,7 @@ export interface RootRouteChildren {
   RegisterRoute: typeof RegisterRoute
   ServicesRoute: typeof ServicesRoute
   UserRoute: typeof UserRouteWithChildren
+  BookingServiceIdRoute: typeof BookingServiceIdRoute
   ProviderIdRoute: typeof ProviderIdRoute
   ServiceIdRoute: typeof ServiceIdRoute
 }
@@ -469,44 +494,50 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProBookingsRouteImport
       parentRoute: typeof ProRoute
     }
-    '/pro/services/add': {
-      id: '/pro/services/add'
-      path: '/add'
-      fullPath: '/pro/services/add'
-      preLoaderRoute: typeof ProServicesAddRouteImport
-      parentRoute: typeof ProServicesRoute
+    '/pro/add-service': {
+      id: '/pro/add-service'
+      path: '/add-service'
+      fullPath: '/pro/add-service'
+      preLoaderRoute: typeof ProAddServiceRouteImport
+      parentRoute: typeof ProRoute
+    }
+    '/booking/$serviceId': {
+      id: '/booking/$serviceId'
+      path: '/booking/$serviceId'
+      fullPath: '/booking/$serviceId'
+      preLoaderRoute: typeof BookingServiceIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/pro/edit-service/$serviceId': {
+      id: '/pro/edit-service/$serviceId'
+      path: '/edit-service/$serviceId'
+      fullPath: '/pro/edit-service/$serviceId'
+      preLoaderRoute: typeof ProEditServiceServiceIdRouteImport
+      parentRoute: typeof ProRoute
     }
   }
 }
 
-interface ProServicesRouteChildren {
-  ProServicesAddRoute: typeof ProServicesAddRoute
-}
-
-const ProServicesRouteChildren: ProServicesRouteChildren = {
-  ProServicesAddRoute: ProServicesAddRoute,
-}
-
-const ProServicesRouteWithChildren = ProServicesRoute._addFileChildren(
-  ProServicesRouteChildren,
-)
-
 interface ProRouteChildren {
+  ProAddServiceRoute: typeof ProAddServiceRoute
   ProBookingsRoute: typeof ProBookingsRoute
   ProNotificationsRoute: typeof ProNotificationsRoute
   ProProfileRoute: typeof ProProfileRoute
   ProReviewsRoute: typeof ProReviewsRoute
-  ProServicesRoute: typeof ProServicesRouteWithChildren
+  ProServicesRoute: typeof ProServicesRoute
   ProIndexRoute: typeof ProIndexRoute
+  ProEditServiceServiceIdRoute: typeof ProEditServiceServiceIdRoute
 }
 
 const ProRouteChildren: ProRouteChildren = {
+  ProAddServiceRoute: ProAddServiceRoute,
   ProBookingsRoute: ProBookingsRoute,
   ProNotificationsRoute: ProNotificationsRoute,
   ProProfileRoute: ProProfileRoute,
   ProReviewsRoute: ProReviewsRoute,
-  ProServicesRoute: ProServicesRouteWithChildren,
+  ProServicesRoute: ProServicesRoute,
   ProIndexRoute: ProIndexRoute,
+  ProEditServiceServiceIdRoute: ProEditServiceServiceIdRoute,
 }
 
 const ProRouteWithChildren = ProRoute._addFileChildren(ProRouteChildren)
@@ -539,9 +570,20 @@ const rootRouteChildren: RootRouteChildren = {
   RegisterRoute: RegisterRoute,
   ServicesRoute: ServicesRoute,
   UserRoute: UserRouteWithChildren,
+  BookingServiceIdRoute: BookingServiceIdRoute,
   ProviderIdRoute: ProviderIdRoute,
   ServiceIdRoute: ServiceIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}

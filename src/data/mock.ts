@@ -1,13 +1,22 @@
 export type Service = {
-  id: number;
+  serviceId: number;
+  providerId: number;
+  providerUserId: number;
+
+  businessName: string;
   title: string;
   description: string;
+
+  experience: string;
+  rating: number;
+  verified: boolean;
+
   price: number;
   available: boolean;
-  categoryId: number;
-  categoryName: string;
+
+  categoryId: number | null;
+
   createdAt: string;
-  providerId: number;
 };
 
 export type Provider = {
@@ -49,20 +58,128 @@ export const providers: Provider[] = [
 ];
 
 export const services: Service[] = [
-  { id: 101, title: "Home Electrical Wiring & Repair", description: "Full home wiring inspection, fault diagnosis and safe repairs by certified electricians.", price: 799, available: true, categoryId: 1, categoryName: "Electrician", createdAt: "2025-05-12", providerId: 1 },
-  { id: 102, title: "Bathroom Leak & Pipe Repair", description: "Quick diagnosis and repair of leaks, broken pipes and faucet replacements.", price: 599, available: true, categoryId: 2, categoryName: "Plumber", createdAt: "2025-05-18", providerId: 2 },
-  { id: 103, title: "2 BHK Interior Painting", description: "Premium emulsion painting for a 2 BHK including putty, primer and 2 coats.", price: 12999, available: true, categoryId: 3, categoryName: "Painter", createdAt: "2025-06-01", providerId: 3 },
-  { id: 104, title: "Modular Kitchen Carpentry", description: "Custom modular kitchen design, fabrication and installation in 7-10 days.", price: 45000, available: false, categoryId: 4, categoryName: "Carpenter", createdAt: "2025-04-22", providerId: 3 },
-  { id: 105, title: "Deep Home Cleaning (3 BHK)", description: "Top-to-bottom deep cleaning of a 3 BHK home — kitchen, bathrooms, floors and balcony.", price: 2499, available: true, categoryId: 5, categoryName: "Cleaning", createdAt: "2025-06-10", providerId: 4 },
-  { id: 106, title: "Bridal Makeup & Hair", description: "HD bridal makeup, hair styling and draping by senior artists at your venue.", price: 8999, available: true, categoryId: 6, categoryName: "Salon", createdAt: "2025-05-30", providerId: 6 },
-  { id: 107, title: "Split AC Deep Cleaning", description: "Jet cleaning of indoor and outdoor units, gas check and performance test.", price: 699, available: true, categoryId: 7, categoryName: "AC Repair", createdAt: "2025-06-15", providerId: 5 },
-  { id: 108, title: "Refrigerator Repair", description: "Cooling issues, gas refill, thermostat and compressor repair for all brands.", price: 449, available: true, categoryId: 8, categoryName: "Home Appliances", createdAt: "2025-06-18", providerId: 5 },
-  { id: 109, title: "Ceiling Fan Installation", description: "Installation of new ceiling fans with safe wiring and regulator setup.", price: 299, available: true, categoryId: 1, categoryName: "Electrician", createdAt: "2025-06-20", providerId: 1 },
-  { id: 110, title: "Sofa & Carpet Shampooing", description: "Professional shampoo cleaning of sofa, carpet and curtains with stain removal.", price: 1299, available: true, categoryId: 5, categoryName: "Cleaning", createdAt: "2025-06-08", providerId: 4 },
-  { id: 111, title: "Men's Grooming at Home", description: "Haircut, beard styling, and facial — premium products and trained barbers.", price: 799, available: true, categoryId: 6, categoryName: "Salon", createdAt: "2025-06-12", providerId: 6 },
-  { id: 112, title: "Geyser Installation & Repair", description: "Installation, descaling and repair of electric and gas geysers.", price: 549, available: false, categoryId: 2, categoryName: "Plumber", createdAt: "2025-05-25", providerId: 2 },
+  {
+    serviceId: 101,
+    providerId: 1,
+    providerUserId: 1,
+    businessName: "BrightSpark Electricals",
+    title: "Home Electrical Wiring & Repair",
+    description: "Full home wiring inspection, fault diagnosis and safe repairs by certified electricians.",
+    experience: "8",
+    rating: 4.8,
+    verified: true,
+    price: 799,
+    available: true,
+    categoryId: 1,
+    createdAt: "2025-05-12T10:30:00",
+  },
+  {
+    serviceId: 102,
+    providerId: 2,
+    providerUserId: 2,
+    businessName: "AquaFlow Plumbing",
+    title: "Bathroom Leak & Pipe Repair",
+    description: "Quick diagnosis and repair of leaks, broken pipes and faucet replacements.",
+    experience: "12",
+    rating: 4.7,
+    verified: true,
+    price: 599,
+    available: true,
+    categoryId: 2,
+    createdAt: "2025-05-18T14:15:00",
+  },
+  {
+    serviceId: 103,
+    providerId: 3,
+    providerUserId: 3,
+    businessName: "ColorCraft Painters",
+    title: "2 BHK Interior Painting",
+    description: "Premium emulsion painting for a 2 BHK including putty, primer and 2 coats.",
+    experience: "6",
+    rating: 4.9,
+    verified: true,
+    price: 12999,
+    available: true,
+    categoryId: 3,
+    createdAt: "2025-06-01T09:00:00",
+  },
+  {
+    serviceId: 104,
+    providerId: 4,
+    providerUserId: 4,
+    businessName: "WoodWorks Carpentry",
+    title: "Modular Kitchen Carpentry",
+    description: "Custom modular kitchen design, fabrication and installation in 7-10 days.",
+    experience: "10",
+    rating: 4.6,
+    verified: true,
+    price: 45000,
+    available: false,
+    categoryId: 4,
+    createdAt: "2025-04-22T11:45:00",
+  },
+  {
+    serviceId: 105,
+    providerId: 5,
+    providerUserId: 5,
+    businessName: "SparklePro Cleaning",
+    title: "Deep Home Cleaning (3 BHK)",
+    description: "Top-to-bottom deep cleaning of a 3 BHK home including kitchen, bathrooms and balcony.",
+    experience: "5",
+    rating: 4.6,
+    verified: true,
+    price: 2499,
+    available: true,
+    categoryId: 5,
+    createdAt: "2025-06-10T15:20:00",
+  },
+  {
+    serviceId: 106,
+    providerId: 6,
+    providerUserId: 6,
+    businessName: "Glamour Studio",
+    title: "Bridal Makeup & Hair",
+    description: "HD bridal makeup, hair styling and draping by senior artists at your venue.",
+    experience: "7",
+    rating: 4.9,
+    verified: true,
+    price: 8999,
+    available: true,
+    categoryId: 6,
+    createdAt: "2025-05-30T13:10:00",
+  },
+  {
+    serviceId: 107,
+    providerId: 7,
+    providerUserId: 7,
+    businessName: "CoolBreeze AC Services",
+    title: "AC Installation & Gas Refill",
+    description: "Installation, gas refill, servicing and repair for all major AC brands.",
+    experience: "10",
+    rating: 4.8,
+    verified: false,
+    price: 1499,
+    available: true,
+    categoryId: 7,
+    createdAt: "2025-06-15T16:40:00",
+  },
+  {
+    serviceId: 108,
+    providerId: 8,
+    providerUserId: 8,
+    businessName: "Home Appliance Experts",
+    title: "Washing Machine Repair",
+    description: "Repair and maintenance for semi-automatic and fully automatic washing machines.",
+    experience: "9",
+    rating: 4.7,
+    verified: true,
+    price: 699,
+    available: true,
+    categoryId: 8,
+    createdAt: "2025-06-20T12:00:00",
+  },
 ];
-
+  
 export const reviews: Review[] = [
   { id: 1, serviceId: 101, userName: "Rohan Mehta", rating: 5, comment: "Quick response and clean work. Highly recommended.", createdAt: "2025-06-01" },
   { id: 2, serviceId: 101, userName: "Priya Sharma", rating: 4, comment: "Good service, slight delay in arrival but solved the issue well.", createdAt: "2025-06-08" },

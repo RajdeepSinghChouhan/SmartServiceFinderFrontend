@@ -2,20 +2,89 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { Calendar, Clock, CheckCircle2, XCircle, Bell } from "lucide-react";
 import StatsCard from "../components/StatsCard";
 import StatusBadge from "../components/StatusBadge";
-import { mockBookings, mockNotifications } from "../data/userMock";
+import { useEffect, useState } from "react";
+import { bookingApi } from "../api/bookingApi";
+import { notificationApi } from "../api/notificationApi";
+import { STORAGE_KEYS } from "../utils/constants";
+import { toast } from "sonner";
 
 export const Route = createFileRoute("/user/")({
   component: DashboardHome,
 });
 
-function DashboardHome() {
-  const total = mockBookings.length;
-  const pending = mockBookings.filter((b) => b.status === "PENDING").length;
-  const completed = mockBookings.filter((b) => b.status === "COMPLETED").length;
-  const cancelled = mockBookings.filter((b) => b.status === "CANCELLED" || b.status === "REJECTED").length;
 
-  const recent = [...mockBookings].sort((a, b) => b.createdAt.localeCompare(a.createdAt)).slice(0, 5);
-  const recentNotifs = [...mockNotifications].sort((a, b) => b.createdAt.localeCompare(a.createdAt)).slice(0, 5);
+function DashboardHome() {
+
+  const [bookings, setBookings] = useState<any[]>([]);
+  const [notifications, setNotifications] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  
+  const total = bookings.length;
+  const pending = bookings.filter(
+    (b) => b.status === "PENDING"
+  ).length;
+  const completed = bookings.filter(
+    (b) => b.status === "COMPLETED"
+  ).length;
+  const cancelled = bookings.filter(
+    (b) =>
+      b.status === "CANCELLED" ||
+      b.status === "REJECTED"
+  ).length;
+
+  
+  const recent = [...bookings]
+    .sort(
+      (a, b) =>
+        new Date(b.createdAt).getTime() -
+        new Date(a.createdAt).getTime()
+    )
+    .slice(0, 5);
+
+  const recentNotifs = [...notifications]
+  .sort(
+    (a, b) =>
+      new Date(b.createdAt).getTime() -
+      new Date(a.createdAt).getTime()
+  )
+  .slice(0, 5);
+
+  const loadDashboardData = async () => {
+    try {
+      const userId = localStorage.getItem(STORAGE_KEYS.userId);
+
+      if (!userId) return;
+
+      const [bookingData, notificationData] =
+        await Promise.all([
+          bookingApi.user(),
+          notificationApi.list(userId),
+        ]);
+
+      setBookings(bookingData);
+
+      const sortedNotifications = [...notificationData].sort(
+        (a, b) =>
+          new Date(b.createdAt).getTime() -
+          new Date(a.createdAt).getTime()
+      );
+
+      setNotifications(sortedNotifications);
+    } catch (error) {
+      console.error(error);
+      toast.error("Failed to load dashboard data");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    loadDashboardData();
+  }, []);
+
+    if (loading) {
+    return <div>Loading dashboard...</div>;
+  }
 
   return (
     <div>
@@ -41,7 +110,18 @@ function DashboardHome() {
                   <div key={b.id} className="ssf-list-row">
                     <div className="flex-grow-1 min-width-0">
                       <div className="fw-semibold text-truncate">{b.serviceTitle}</div>
-                      <div className="small text-secondary">{b.providerName} • {b.bookingDate} {b.bookingTime}</div>
+                      <div className="small text-secondary">
+                        {b.providerName} •{" "}
+                        {new Date(`${b.bookingDate}T${b.bookingTime}`).toLocaleString("en-IN", {
+                          weekday: "short",
+                          day: "2-digit",
+                          month: "short",
+                          year: "numeric",
+                          hour: "numeric",
+                          minute: "2-digit",
+                          hour12: true,
+                        })}
+                      </div>
                     </div>
                     <StatusBadge status={b.status} />
                   </div>
@@ -66,7 +146,17 @@ function DashboardHome() {
                       <div className="fw-semibold text-truncate">{n.title}</div>
                       <div className="small text-secondary text-truncate">{n.message}</div>
                     </div>
-                    <div className="small text-secondary">{n.createdAt}</div>
+                    <div className="small text-secondary">
+                    {new Date(n.createdAt).toLocaleString("en-IN", {
+                      weekday: "short",
+                      day: "2-digit",
+                      month: "short",
+                      year: "numeric",
+                      hour: "numeric",
+                      minute: "2-digit",
+                      hour12: true,
+                    })}
+                  </div>
                   </div>
                 ))}
               </div>

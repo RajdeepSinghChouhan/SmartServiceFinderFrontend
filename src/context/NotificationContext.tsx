@@ -26,6 +26,8 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
     [user?.role]
   );
 
+
+  
   const refreshNotifications = useCallback(async () => {
     if (!isAuthenticated || !user) {
       setNotifications([]);
@@ -34,10 +36,17 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
     setLoading(true);
     try {
       const data = await notificationApi.list(user.id);
-      setNotifications(Array.isArray(data) ? (data as AppNotification[]) : fallback());
-    } catch {
-      // Backend unavailable — fall back to local mock data so UI keeps working.
-      setNotifications(fallback());
+
+            const sorted = [...data].sort(
+        (a, b) =>
+          new Date(b.createdAt).getTime() -
+          new Date(a.createdAt).getTime()
+      );
+
+      setNotifications(sorted);
+    } catch (error) {
+      console.error(error);
+      setNotifications([]);
     } finally {
       setLoading(false);
     }

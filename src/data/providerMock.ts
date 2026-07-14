@@ -26,7 +26,7 @@ export type ProviderBooking = {
   providerId: number;
   serviceId: number;
   serviceTitle: string;
-  customerName: string;
+  username: string;
   bookingDate: string;
   bookingTime: string;
   address: string;
@@ -65,13 +65,13 @@ export const providerServices: ProviderService[] = [
 ];
 
 export const providerBookings: ProviderBooking[] = [
-  { id: 6001, userId: 1001, providerId: 1, serviceId: 101, serviceTitle: "Home Electrical Wiring & Repair", customerName: "Aarav Mehta", bookingDate: "2026-07-02", bookingTime: "10:30", address: "123, MG Road, Bengaluru", notes: "Living room and kitchen wiring", status: "PENDING", createdAt: "2026-06-24", price: 799 },
-  { id: 6002, userId: 1042, providerId: 1, serviceId: 109, serviceTitle: "Ceiling Fan Installation", customerName: "Priya Sharma", bookingDate: "2026-07-04", bookingTime: "14:00", address: "B-22, Indiranagar, Bengaluru", notes: "2 fans, ceiling height 10ft", status: "PENDING", createdAt: "2026-06-25", price: 598 },
-  { id: 6003, userId: 1077, providerId: 1, serviceId: 101, serviceTitle: "Home Electrical Wiring & Repair", customerName: "Rohit Verma", bookingDate: "2026-07-01", bookingTime: "09:00", address: "Sector 21, Koramangala", notes: "Short circuit issue in bedroom", status: "CONFIRMED", createdAt: "2026-06-22", price: 799 },
-  { id: 6004, userId: 1090, providerId: 1, serviceId: 120, serviceTitle: "MCB & Switchboard Upgrade", customerName: "Sneha Iyer", bookingDate: "2026-06-18", bookingTime: "11:00", address: "HSR Layout, Bengaluru", notes: "", status: "COMPLETED", createdAt: "2026-06-12", price: 1499 },
-  { id: 6005, userId: 1102, providerId: 1, serviceId: 109, serviceTitle: "Ceiling Fan Installation", customerName: "Kabir Nair", bookingDate: "2026-06-10", bookingTime: "16:00", address: "Whitefield, Bengaluru", notes: "1 fan", status: "COMPLETED", createdAt: "2026-06-08", price: 299 },
-  { id: 6006, userId: 1131, providerId: 1, serviceId: 101, serviceTitle: "Home Electrical Wiring & Repair", customerName: "Anita Rao", bookingDate: "2026-06-15", bookingTime: "13:00", address: "JP Nagar, Bengaluru", notes: "Out of station that day", status: "REJECTED", createdAt: "2026-06-14", price: 799 },
-  { id: 6007, userId: 1145, providerId: 1, serviceId: 109, serviceTitle: "Ceiling Fan Installation", customerName: "Vikram Singh", bookingDate: "2026-06-01", bookingTime: "08:00", address: "Marathahalli, Bengaluru", notes: "", status: "CANCELLED", createdAt: "2026-05-25", price: 299 },
+  { id: 6001, userId: 1001, providerId: 1, serviceId: 101, serviceTitle: "Home Electrical Wiring & Repair", username: "Aarav Mehta", bookingDate: "2026-07-02", bookingTime: "10:30", address: "123, MG Road, Bengaluru", notes: "Living room and kitchen wiring", status: "PENDING", createdAt: "2026-06-24", price: 799 },
+  { id: 6002, userId: 1042, providerId: 1, serviceId: 109, serviceTitle: "Ceiling Fan Installation", username: "Priya Sharma", bookingDate: "2026-07-04", bookingTime: "14:00", address: "B-22, Indiranagar, Bengaluru", notes: "2 fans, ceiling height 10ft", status: "PENDING", createdAt: "2026-06-25", price: 598 },
+  { id: 6003, userId: 1077, providerId: 1, serviceId: 101, serviceTitle: "Home Electrical Wiring & Repair", username: "Rohit Verma", bookingDate: "2026-07-01", bookingTime: "09:00", address: "Sector 21, Koramangala", notes: "Short circuit issue in bedroom", status: "ACCEPTED", createdAt: "2026-06-22", price: 799 },
+  { id: 6004, userId: 1090, providerId: 1, serviceId: 120, serviceTitle: "MCB & Switchboard Upgrade", username: "Sneha Iyer", bookingDate: "2026-06-18", bookingTime: "11:00", address: "HSR Layout, Bengaluru", notes: "", status: "COMPLETED", createdAt: "2026-06-12", price: 1499 },
+  { id: 6005, userId: 1102, providerId: 1, serviceId: 109, serviceTitle: "Ceiling Fan Installation", username: "Kabir Nair", bookingDate: "2026-06-10", bookingTime: "16:00", address: "Whitefield, Bengaluru", notes: "1 fan", status: "COMPLETED", createdAt: "2026-06-08", price: 299 },
+  { id: 6006, userId: 1131, providerId: 1, serviceId: 101, serviceTitle: "Home Electrical Wiring & Repair", username: "Anita Rao", bookingDate: "2026-06-15", bookingTime: "13:00", address: "JP Nagar, Bengaluru", notes: "Out of station that day", status: "REJECTED", createdAt: "2026-06-14", price: 799 },
+  { id: 6007, userId: 1145, providerId: 1, serviceId: 109, serviceTitle: "Ceiling Fan Installation", username: "Vikram Singh", bookingDate: "2026-06-01", bookingTime: "08:00", address: "Marathahalli, Bengaluru", notes: "", status: "CANCELLED", createdAt: "2026-05-25", price: 299 },
 ];
 
 export const providerReviews: ProviderReview[] = [

@@ -36,16 +36,22 @@ function LoginPage() {
       if (!u) throw new Error("Invalid token");
       toast.success("Login successful");
       navigate({ to: u.role === "PROVIDER" ? "/pro" : "/user" });
-    } catch (err) {
-      // Backend unreachable → fall back to local mock login so the demo UI keeps working.
-      const networkOrNotFound =
-        axios.isAxiosError(err) && (!err.response || err.response.status === 404);
-      if (networkOrNotFound) {
-        const u = login(form.username.trim(), form.role);
-        toast.success("Logged in (offline demo mode)");
-        navigate({ to: u.role === "PROVIDER" ? "/pro" : "/user" });
+   } catch (err) {
+      if (axios.isAxiosError(err)) {
+        if (err.response?.status === 401) {
+          toast.error("Invalid username or password");
+        } else if (err.response?.status === 403) {
+          toast.error("Access denied");
+        } else if (err.response?.status === 404) {
+          toast.error("Login service not found");
+        } else if (!err.response) {
+          toast.error("Cannot connect to the server. Please make sure the backend is running.");
+        } else {
+          toast.error(err.response.data?.message || "Login failed");
+        }
+      } else {
+        toast.error("Something went wrong. Please try again.");
       }
-      // Other errors already toasted by the axios interceptor.
     } finally {
       setLoading(false);
     }

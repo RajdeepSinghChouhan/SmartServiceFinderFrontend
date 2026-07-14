@@ -16,6 +16,16 @@ function Navbar() {
   const { theme, toggleTheme } = useTheme();
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const isActive = (p: string) => (p === "/" ? pathname === "/" : pathname.startsWith(p));
+  const formatDateTime = (dateString: string) => {
+    return new Date(dateString).toLocaleString("en-IN", {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+      hour: "numeric",
+      minute: "2-digit",
+      hour12: true,
+    });
+  };
 
   useEffect(() => {
     const onClick = (e: MouseEvent) => {
@@ -32,7 +42,6 @@ function Navbar() {
   const dashboardTo = isProvider ? "/pro" : "/user";
   const notifTo = isProvider ? "/pro/notifications" : "/user/notifications";
   const profileTo = isProvider ? "/pro/profile" : "/user/profile";
-
   const links = [
     { to: "/", label: "Home" },
     { to: "/services", label: "Services" },
@@ -90,14 +99,30 @@ function Navbar() {
                   <div className="ssf-dropdown">
                     <div className="ssf-dropdown-header">
                       <span className="fw-semibold">Notifications</span>
-                      <Link to="/user/notifications" onClick={() => setNotifOpen(false)} className="small">View all</Link>
+                      {user?.role === "PROVIDER" ? (
+                        <Link
+                          to={notifTo as any}
+                          onClick={() => setNotifOpen(false)}
+                          className="small"
+                        >
+                          View all
+                        </Link>
+                      ) : (
+                        <Link
+                          to="/user/notifications"
+                          onClick={() => setNotifOpen(false)}
+                          className="small"
+                        >
+                          View all
+                        </Link>
+                      )}
                     </div>
                     <div className="ssf-dropdown-body">
                       {notifSource.slice(0, 4).map((n) => (
                         <Link key={n.id} to={notifTo as any} onClick={() => setNotifOpen(false)} className={`ssf-dropdown-item ${!n.isRead ? "unread" : ""}`}>
                           <div className="fw-semibold small">{n.title}</div>
                           <div className="text-secondary small text-truncate">{n.message}</div>
-                          <div className="text-secondary" style={{ fontSize: "0.72rem" }}>{n.createdAt}</div>
+                          <div className="text-secondary" style={{ fontSize: "0.72rem" }}>{formatDateTime(n.createdAt)}</div>
                         </Link>
                       ))}
                     </div>
