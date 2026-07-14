@@ -8,6 +8,10 @@ import { reviewApi } from "../api/reviewApi";
 
 export const Route = createFileRoute("/service/$id")({
   component: ServiceDetailPage,
+<<<<<<< HEAD
+=======
+
+>>>>>>> 9269fe3dfcb01b3d2e28dcffa2738f5a962f53d9
   notFoundComponent: () => (
     <div className="ssf-error-wrap">
       <div>
@@ -26,7 +30,11 @@ export const Route = createFileRoute("/service/$id")({
 
 function ServiceDetailPage() {
   const { id } = useParams({ from: "/service/$id" });
+<<<<<<< HEAD
   const isLoggedIn = !!localStorage.getItem("token");
+=======
+
+>>>>>>> 9269fe3dfcb01b3d2e28dcffa2738f5a962f53d9
   const [service, setService] = useState<any>(null);
   const [provider, setProvider] = useState<any>(null);
   const [serviceReviews, setServiceReviews] = useState<any[]>([]);
@@ -46,11 +54,14 @@ function ServiceDetailPage() {
       setLoading(true);
       setError("");
 
+<<<<<<< HEAD
       if (!isLoggedIn) {
         setError("Please login first to view service details.");
         setLoading(false);
         return;
       }
+=======
+>>>>>>> 9269fe3dfcb01b3d2e28dcffa2738f5a962f53d9
       // 1. Get Service
       const serviceData = await serviceApi.byId(id);
 
@@ -109,12 +120,15 @@ function ServiceDetailPage() {
     return (
       <div className="container py-5">
         <h4>{error}</h4>
+<<<<<<< HEAD
           <Link
           to="/login"
           className="btn btn-ssf-primary mt-3"
         >
           Login
         </Link>
+=======
+>>>>>>> 9269fe3dfcb01b3d2e28dcffa2738f5a962f53d9
       </div>
     );
   }

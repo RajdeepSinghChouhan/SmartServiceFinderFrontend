@@ -32,6 +32,7 @@ import { Route as ProProfileRouteImport } from './routes/pro.profile'
 import { Route as ProNotificationsRouteImport } from './routes/pro.notifications'
 import { Route as ProBookingsRouteImport } from './routes/pro.bookings'
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { Route as ProAddServiceRouteImport } from './routes/pro.add-service'
 import { Route as BookingServiceIdRouteImport } from './routes/booking.$serviceId'
 import { Route as ProEditServiceServiceIdRouteImport } from './routes/pro.edit-service.$serviceId'
@@ -39,6 +40,11 @@ import { Route as ProEditServiceServiceIdRouteImport } from './routes/pro.edit-s
 import { Route as BookServiceIdRouteImport } from './routes/book.$serviceId'
 import { Route as ProServicesAddRouteImport } from './routes/pro.services.add'
 >>>>>>> cfeed3853f68911339876f64c54284efde3885ed
+=======
+import { Route as ProAddServiceRouteImport } from './routes/pro.add-service'
+import { Route as BookingServiceIdRouteImport } from './routes/booking.$serviceId'
+import { Route as ProEditServiceServiceIdRouteImport } from './routes/pro.edit-service.$serviceId'
+>>>>>>> 9269fe3dfcb01b3d2e28dcffa2738f5a962f53d9
 
 const UserRoute = UserRouteImport.update({
   id: '/user',
@@ -151,6 +157,9 @@ const ProBookingsRoute = ProBookingsRouteImport.update({
   getParentRoute: () => ProRoute,
 } as any)
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 9269fe3dfcb01b3d2e28dcffa2738f5a962f53d9
 const ProAddServiceRoute = ProAddServiceRouteImport.update({
   id: '/add-service',
   path: '/add-service',
@@ -165,6 +174,7 @@ const ProEditServiceServiceIdRoute = ProEditServiceServiceIdRouteImport.update({
   id: '/edit-service/$serviceId',
   path: '/edit-service/$serviceId',
   getParentRoute: () => ProRoute,
+<<<<<<< HEAD
 =======
 const BookServiceIdRoute = BookServiceIdRouteImport.update({
   id: '/book/$serviceId',
@@ -176,6 +186,8 @@ const ProServicesAddRoute = ProServicesAddRouteImport.update({
   path: '/add',
   getParentRoute: () => ProServicesRoute,
 >>>>>>> cfeed3853f68911339876f64c54284efde3885ed
+=======
+>>>>>>> 9269fe3dfcb01b3d2e28dcffa2738f5a962f53d9
 } as any)
 
 export interface FileRoutesByFullPath {
@@ -189,11 +201,16 @@ export interface FileRoutesByFullPath {
   '/services': typeof ServicesRoute
   '/user': typeof UserRouteWithChildren
 <<<<<<< HEAD
+<<<<<<< HEAD
   '/booking/$serviceId': typeof BookingServiceIdRoute
   '/pro/add-service': typeof ProAddServiceRoute
 =======
   '/book/$serviceId': typeof BookServiceIdRoute
 >>>>>>> cfeed3853f68911339876f64c54284efde3885ed
+=======
+  '/booking/$serviceId': typeof BookingServiceIdRoute
+  '/pro/add-service': typeof ProAddServiceRoute
+>>>>>>> 9269fe3dfcb01b3d2e28dcffa2738f5a962f53d9
   '/pro/bookings': typeof ProBookingsRoute
   '/pro/notifications': typeof ProNotificationsRoute
   '/pro/profile': typeof ProProfileRoute
@@ -218,11 +235,16 @@ export interface FileRoutesByTo {
   '/register': typeof RegisterRoute
   '/services': typeof ServicesRoute
 <<<<<<< HEAD
+<<<<<<< HEAD
   '/booking/$serviceId': typeof BookingServiceIdRoute
   '/pro/add-service': typeof ProAddServiceRoute
 =======
   '/book/$serviceId': typeof BookServiceIdRoute
 >>>>>>> cfeed3853f68911339876f64c54284efde3885ed
+=======
+  '/booking/$serviceId': typeof BookingServiceIdRoute
+  '/pro/add-service': typeof ProAddServiceRoute
+>>>>>>> 9269fe3dfcb01b3d2e28dcffa2738f5a962f53d9
   '/pro/bookings': typeof ProBookingsRoute
   '/pro/notifications': typeof ProNotificationsRoute
   '/pro/profile': typeof ProProfileRoute
@@ -250,11 +272,16 @@ export interface FileRoutesById {
   '/services': typeof ServicesRoute
   '/user': typeof UserRouteWithChildren
 <<<<<<< HEAD
+<<<<<<< HEAD
   '/booking/$serviceId': typeof BookingServiceIdRoute
   '/pro/add-service': typeof ProAddServiceRoute
 =======
   '/book/$serviceId': typeof BookServiceIdRoute
 >>>>>>> cfeed3853f68911339876f64c54284efde3885ed
+=======
+  '/booking/$serviceId': typeof BookingServiceIdRoute
+  '/pro/add-service': typeof ProAddServiceRoute
+>>>>>>> 9269fe3dfcb01b3d2e28dcffa2738f5a962f53d9
   '/pro/bookings': typeof ProBookingsRoute
   '/pro/notifications': typeof ProNotificationsRoute
   '/pro/profile': typeof ProProfileRoute
@@ -283,11 +310,16 @@ export interface FileRouteTypes {
     | '/services'
     | '/user'
 <<<<<<< HEAD
+<<<<<<< HEAD
     | '/booking/$serviceId'
     | '/pro/add-service'
 =======
     | '/book/$serviceId'
 >>>>>>> cfeed3853f68911339876f64c54284efde3885ed
+=======
+    | '/booking/$serviceId'
+    | '/pro/add-service'
+>>>>>>> 9269fe3dfcb01b3d2e28dcffa2738f5a962f53d9
     | '/pro/bookings'
     | '/pro/notifications'
     | '/pro/profile'
@@ -312,11 +344,16 @@ export interface FileRouteTypes {
     | '/register'
     | '/services'
 <<<<<<< HEAD
+<<<<<<< HEAD
     | '/booking/$serviceId'
     | '/pro/add-service'
 =======
     | '/book/$serviceId'
 >>>>>>> cfeed3853f68911339876f64c54284efde3885ed
+=======
+    | '/booking/$serviceId'
+    | '/pro/add-service'
+>>>>>>> 9269fe3dfcb01b3d2e28dcffa2738f5a962f53d9
     | '/pro/bookings'
     | '/pro/notifications'
     | '/pro/profile'
@@ -343,11 +380,16 @@ export interface FileRouteTypes {
     | '/services'
     | '/user'
 <<<<<<< HEAD
+<<<<<<< HEAD
     | '/booking/$serviceId'
     | '/pro/add-service'
 =======
     | '/book/$serviceId'
 >>>>>>> cfeed3853f68911339876f64c54284efde3885ed
+=======
+    | '/booking/$serviceId'
+    | '/pro/add-service'
+>>>>>>> 9269fe3dfcb01b3d2e28dcffa2738f5a962f53d9
     | '/pro/bookings'
     | '/pro/notifications'
     | '/pro/profile'
@@ -375,10 +417,14 @@ export interface RootRouteChildren {
   ServicesRoute: typeof ServicesRoute
   UserRoute: typeof UserRouteWithChildren
 <<<<<<< HEAD
+<<<<<<< HEAD
   BookingServiceIdRoute: typeof BookingServiceIdRoute
 =======
   BookServiceIdRoute: typeof BookServiceIdRoute
 >>>>>>> cfeed3853f68911339876f64c54284efde3885ed
+=======
+  BookingServiceIdRoute: typeof BookingServiceIdRoute
+>>>>>>> 9269fe3dfcb01b3d2e28dcffa2738f5a962f53d9
   ProviderIdRoute: typeof ProviderIdRoute
   ServiceIdRoute: typeof ServiceIdRoute
 }
@@ -540,6 +586,9 @@ declare module '@tanstack/react-router' {
       parentRoute: typeof ProRoute
     }
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 9269fe3dfcb01b3d2e28dcffa2738f5a962f53d9
     '/pro/add-service': {
       id: '/pro/add-service'
       path: '/add-service'
@@ -560,6 +609,7 @@ declare module '@tanstack/react-router' {
       fullPath: '/pro/edit-service/$serviceId'
       preLoaderRoute: typeof ProEditServiceServiceIdRouteImport
       parentRoute: typeof ProRoute
+<<<<<<< HEAD
 =======
     '/book/$serviceId': {
       id: '/book/$serviceId'
@@ -575,6 +625,8 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProServicesAddRouteImport
       parentRoute: typeof ProServicesRoute
 >>>>>>> cfeed3853f68911339876f64c54284efde3885ed
+=======
+>>>>>>> 9269fe3dfcb01b3d2e28dcffa2738f5a962f53d9
     }
   }
 }
@@ -632,10 +684,14 @@ const rootRouteChildren: RootRouteChildren = {
   ServicesRoute: ServicesRoute,
   UserRoute: UserRouteWithChildren,
 <<<<<<< HEAD
+<<<<<<< HEAD
   BookingServiceIdRoute: BookingServiceIdRoute,
 =======
   BookServiceIdRoute: BookServiceIdRoute,
 >>>>>>> cfeed3853f68911339876f64c54284efde3885ed
+=======
+  BookingServiceIdRoute: BookingServiceIdRoute,
+>>>>>>> 9269fe3dfcb01b3d2e28dcffa2738f5a962f53d9
   ProviderIdRoute: ProviderIdRoute,
   ServiceIdRoute: ServiceIdRoute,
 }
