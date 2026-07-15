@@ -155,7 +155,7 @@ function BookingPage() {
     try {
       await bookingApi.create({
         providerId: service.providerId,
-        serviceId: service.serviceId,
+        serviceId: service.id,
         bookingDate: form.bookingDate,
         bookingTime: form.bookingTime,
         address: form.address.trim(),

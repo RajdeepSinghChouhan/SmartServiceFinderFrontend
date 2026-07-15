@@ -4,7 +4,6 @@ export const API_BASE_URL =
   (typeof import.meta !== "undefined" && (import.meta as any).env?.VITE_API_BASE_URL) ||
   "http://localhost:8080";
 
-  //http://localhost:8080
 export const STORAGE_KEYS = {
   token: "token",
   userId: "userId",
@@ -59,10 +58,9 @@ export const API_PATHS = {
     create: "/services/data",
     list: "/services/data",
     mine: "/services/data/my-services",
-    update: (id: number | string) => `/services/data/${id}`,
     byId: (id: number | string) => `/services/data/${id}`,
     delete: (id: number | string) => `/services/data/${id}`,
-    byProvider: (id: number | string) => `/services/provider-services/${id}`,
+    byProvider: (id: number | string) => `/services/provider/${id}`,
   },
   booking: {
     create: "/booking/data",

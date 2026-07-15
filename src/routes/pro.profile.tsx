@@ -322,6 +322,7 @@ function ProviderProfilePage() {
                 <input
                   className="form-control"
                   value={userForm.username}
+                  disabled
                 />
               </div>
 

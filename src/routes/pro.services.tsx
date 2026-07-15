@@ -2,7 +2,6 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { Trash2, PlusCircle, Briefcase, Lock } from "lucide-react";
 import { toast } from "sonner";
-import { Pencil } from "lucide-react";
 import { serviceApi } from "@/api/serviceApi";
 import ConfirmModal from "../components/ConfirmModal";
 import { Service } from "@/data/mock";
@@ -116,28 +115,10 @@ function MyServices() {
                   {s.businessName}
                 </div>
                 <div className="mt-auto d-flex justify-content-between align-items-center">
-                    <div className="fw-bold" style={{ color: "var(--ssf-primary-light)" }}>
-                      ₹{s.price}
-                    </div>
-
-                    <div className="d-flex gap-2">
-                      <Link
-                        to="/pro/edit-service/$serviceId"
-                        params={{ serviceId: String(s.serviceId) }}
-                        className="btn btn-sm btn-outline-primary"
-                      >
-                        <Pencil size={14} className="me-1" />
-                        Edit
-                      </Link>
-
-                      <button
-                        className="btn btn-sm btn-outline-danger"
-                        onClick={() => setToDelete(s)}
-                      >
-                        <Trash2 size={14} className="me-1" />
-                        Delete
-                      </button>
-                    </div>
+                  <div className="fw-bold" style={{ color: "var(--ssf-primary-light)" }}>₹{s.price}</div>
+                  <button className="btn btn-sm btn-outline-danger" onClick={() => setToDelete(s)}>
+                    <Trash2 size={14} className="me-1" /> Delete
+                  </button>
                 </div>
               </div>
             </div>

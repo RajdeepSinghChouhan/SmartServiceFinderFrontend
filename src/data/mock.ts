@@ -1,5 +1,5 @@
 export type Service = {
-  serviceId: number;
+  id: number;
   providerId: number;
   providerUserId: number;
 
@@ -59,7 +59,7 @@ export const providers: Provider[] = [
 
 export const services: Service[] = [
   {
-    serviceId: 101,
+    id: 101,
     providerId: 1,
     providerUserId: 1,
     businessName: "BrightSpark Electricals",
@@ -74,7 +74,7 @@ export const services: Service[] = [
     createdAt: "2025-05-12T10:30:00",
   },
   {
-    serviceId: 102,
+    id: 102,
     providerId: 2,
     providerUserId: 2,
     businessName: "AquaFlow Plumbing",
@@ -89,7 +89,7 @@ export const services: Service[] = [
     createdAt: "2025-05-18T14:15:00",
   },
   {
-    serviceId: 103,
+    id: 103,
     providerId: 3,
     providerUserId: 3,
     businessName: "ColorCraft Painters",
@@ -104,7 +104,7 @@ export const services: Service[] = [
     createdAt: "2025-06-01T09:00:00",
   },
   {
-    serviceId: 104,
+    id: 104,
     providerId: 4,
     providerUserId: 4,
     businessName: "WoodWorks Carpentry",
@@ -119,7 +119,7 @@ export const services: Service[] = [
     createdAt: "2025-04-22T11:45:00",
   },
   {
-    serviceId: 105,
+    id: 105,
     providerId: 5,
     providerUserId: 5,
     businessName: "SparklePro Cleaning",
@@ -134,7 +134,7 @@ export const services: Service[] = [
     createdAt: "2025-06-10T15:20:00",
   },
   {
-    serviceId: 106,
+    id: 106,
     providerId: 6,
     providerUserId: 6,
     businessName: "Glamour Studio",
@@ -149,7 +149,7 @@ export const services: Service[] = [
     createdAt: "2025-05-30T13:10:00",
   },
   {
-    serviceId: 107,
+    id: 107,
     providerId: 7,
     providerUserId: 7,
     businessName: "CoolBreeze AC Services",
@@ -164,7 +164,7 @@ export const services: Service[] = [
     createdAt: "2025-06-15T16:40:00",
   },
   {
-    serviceId: 108,
+    id: 108,
     providerId: 8,
     providerUserId: 8,
     businessName: "Home Appliance Experts",

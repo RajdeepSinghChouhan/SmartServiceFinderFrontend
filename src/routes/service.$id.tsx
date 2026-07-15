@@ -4,14 +4,14 @@ import { useEffect, useState } from "react";
 
 import { serviceApi } from "../api/serviceApi";
 import { providerApi } from "../api/providerApi";
+import { providers as mockProviders } from "../data/mock";
+import { services as mockServices } from "../data/mock";
+import { reviews as mockReviews } from "../data/mock";
 import { reviewApi } from "../api/reviewApi";
 
 export const Route = createFileRoute("/service/$id")({
   component: ServiceDetailPage,
-<<<<<<< HEAD
-=======
 
->>>>>>> 9269fe3dfcb01b3d2e28dcffa2738f5a962f53d9
   notFoundComponent: () => (
     <div className="ssf-error-wrap">
       <div>
@@ -30,11 +30,7 @@ export const Route = createFileRoute("/service/$id")({
 
 function ServiceDetailPage() {
   const { id } = useParams({ from: "/service/$id" });
-<<<<<<< HEAD
-  const isLoggedIn = !!localStorage.getItem("token");
-=======
 
->>>>>>> 9269fe3dfcb01b3d2e28dcffa2738f5a962f53d9
   const [service, setService] = useState<any>(null);
   const [provider, setProvider] = useState<any>(null);
   const [serviceReviews, setServiceReviews] = useState<any[]>([]);
@@ -50,56 +46,39 @@ function ServiceDetailPage() {
   }, [id]);
 
   const fetchData = async () => {
-    try {
+    try 
+    {
       setLoading(true);
       setError("");
 
-<<<<<<< HEAD
-      if (!isLoggedIn) {
-        setError("Please login first to view service details.");
-        setLoading(false);
-        return;
-      }
-=======
->>>>>>> 9269fe3dfcb01b3d2e28dcffa2738f5a962f53d9
       // 1. Get Service
       const serviceData = await serviceApi.byId(id);
 
+      if (!serviceData) {
+        setError("Service not found");
+        return;
+      }
       setService(serviceData);
 
       ///fetch review count
-      const count = await reviewApi.count(
-        serviceData.providerId
-      );
-
+      const count = await reviewApi.count(serviceData.providerId);
       setReviewCount(count);
+    
 
       // 2. Get Reviews
-      try {
-        const reviewsData = await reviewApi.byService(id);
-        setServiceReviews(reviewsData || []);
-      } catch (reviewError) {
-        console.error("Reviews Error:", reviewError);
-      }
+      const reviewsData = await reviewApi.byService(id);
+      setServiceReviews(reviewsData || []);
 
       // 3. Get Provider
-      if (serviceData?.providerId) {
-        try {
-          const providerData = await providerApi.byId(
-            serviceData.providerId
-          );
+      const providerData = await providerApi.byId(serviceData.providerId);
 
-          setProvider(providerData);
+      setProvider(providerData);
 
-          const rating = await reviewApi.averageRating(
-            serviceData.providerId
-          );
+       
+      const rating = await reviewApi.averageRating(serviceData.providerId);
 
-          setAvgRating(Number(rating || 0).toFixed(1));
-        } catch (error) {
-          console.error("Provider/Rating Error:", error);
-        }
-      }
+      setAvgRating(Number(rating || 0).toFixed(1));
+      
     } catch (err) {
       console.error(err);
       setError("Failed to load service");
@@ -120,15 +99,6 @@ function ServiceDetailPage() {
     return (
       <div className="container py-5">
         <h4>{error}</h4>
-<<<<<<< HEAD
-          <Link
-          to="/login"
-          className="btn btn-ssf-primary mt-3"
-        >
-          Login
-        </Link>
-=======
->>>>>>> 9269fe3dfcb01b3d2e28dcffa2738f5a962f53d9
       </div>
     );
   }
@@ -231,7 +201,11 @@ function ServiceDetailPage() {
                 <div className="display-6 fw-bold mb-3" style={{ color: "var(--ssf-primary)" }}>₹{service.price.toLocaleString()}</div>
                 <Link
                   to="/booking/$serviceId"
-                  params={{ serviceId: String(service.serviceId) }}
+                  params={{
+                    serviceId: String(
+                      service.id
+                    ),
+                  }}
                   className={`btn btn-ssf-primary w-100 mb-2 ${!service.available ? "disabled" : ""}`}
                 >
                   {service.available ? "Book Service" : "Currently Unavailable"}

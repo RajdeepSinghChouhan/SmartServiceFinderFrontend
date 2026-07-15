@@ -156,7 +156,7 @@ function ServicesPage() {
               ) : (
                 <div className="row g-4">
                   {pageItems.map((s) => (
-                    <div className="col-md-6" key={s.serviceId}>
+                    <div className="col-md-6" key={s.id}>
                       <div className="ssf-card">
                         <div className="ssf-card-body">
                           <div className="d-flex justify-content-between align-items-start mb-2">
@@ -172,8 +172,8 @@ function ServicesPage() {
                             <small className="text-secondary">Added {new Date(s.createdAt).toLocaleDateString()}</small>
                           </div>
                           <div className="d-flex gap-2">
-                            <Link to="/service/$id" params={{ id: String(s.serviceId) }} className="btn btn-ssf-ghost flex-fill">Details</Link>
-                            <Link to="/service/$id" params={{ id: String(s.serviceId) }} className="btn btn-ssf-primary flex-fill">Book Now</Link>
+                            <Link to="/service/$id" params={{ id: String(s.id) }} className="btn btn-ssf-ghost flex-fill">Details</Link>
+                            <Link to="/service/$id" params={{ id: String(s.id) }} className="btn btn-ssf-primary flex-fill">Book Now</Link>
                           </div>
                         </div>
                       </div>

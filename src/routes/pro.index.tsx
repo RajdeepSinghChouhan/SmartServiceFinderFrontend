@@ -20,41 +20,6 @@ function ProviderHome() {
   const [bookings, setBookings] = useState<any[]>([]);
   const [reviews, setReviews] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString("en-IN", {
-      day: "numeric",
-      month: "short",
-      year: "numeric",
-    });
-  };
-
-  const formatTime = (time: string) => {
-    const [hours, minutes] = time.split(":");
-
-    return new Date(
-      2000,
-      0,
-      1,
-      Number(hours),
-      Number(minutes)
-    ).toLocaleTimeString("en-IN", {
-      hour: "numeric",
-      minute: "2-digit",
-      hour12: true,
-    });
-  };
-
-  const formatDateTime = (dateTime: string) => {
-    return new Date(dateTime).toLocaleString("en-IN", {
-      day: "numeric",
-      month: "short",
-      year: "numeric",
-      hour: "numeric",
-      minute: "2-digit",
-      hour12: true,
-      timeZone: "Asia/Kolkata",
-    });
-  };
 
   const totalServices = services.length;
   const activeServices = services.filter(
@@ -104,6 +69,11 @@ function ProviderHome() {
             reviewApi.byProvider(providerId),
           ]);
           
+          console.log("providerId", providerId);
+          console.log("services", serviceData);
+          console.log("bookings", bookingData);
+          console.log("reviews", reviewData);
+          
           setServices(serviceData);
           setBookings(bookingData);
           setReviews(reviewData);
@@ -147,9 +117,7 @@ function ProviderHome() {
                     <div className="d-flex justify-content-between align-items-start gap-2">
                       <div>
                         <div className="fw-semibold">{b.serviceTitle}</div>
-                        <div className="small text-secondary">
-                          {b.username} | {formatDate(b.bookingDate)} | {formatTime(b.bookingTime)}
-                        </div>
+                        <div className="small text-secondary">{b.customerName} · {b.bookingDate} {b.bookingTime}</div>
                       </div>
                       <StatusBadge status={b.status} />
                     </div>
@@ -173,11 +141,10 @@ function ProviderHome() {
                 {recentReviews.map((r) => (
                   <div key={r.reviewId} className="ssf-list-row">
                     <div className="d-flex justify-content-between align-items-center">
-                      <div className="fw-semibold">{r.username}</div>
+                      <div className="fw-semibold">User #{r.userId}</div>
+                      <div className="small" style={{ color: "#fbbf24" }}>{"★".repeat(r.rating)}<span className="text-secondary">{"★".repeat(5 - r.rating)}</span></div>
                     </div>
-                    <div className="small text-secondary">
-                      {r.serviceTitle} | {formatDateTime(r.createdAt)}
-                    </div>
+                    <div className="small text-secondary">{r.serviceTitle} · {r.createdAt}</div>
                     <p className="small mb-0 mt-1">{r.comment}</p>
                   </div>
                 ))}

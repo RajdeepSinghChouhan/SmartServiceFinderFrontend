@@ -88,14 +88,7 @@ function ProviderNotifications() {
     const loadNotifications = async () => {
       try {
         const data = await notificationApi.list(userId);
-
-        const sorted = [...data].sort(
-          (a, b) =>
-            new Date(b.createdAt).getTime() -
-            new Date(a.createdAt).getTime()
-        );
-
-        setItems(sorted);
+        setItems(data);
       } catch (error) {
         console.error(error);
         toast.error("Failed to load notifications");

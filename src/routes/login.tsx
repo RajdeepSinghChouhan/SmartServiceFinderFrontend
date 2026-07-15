@@ -2,7 +2,7 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { Lock, User, Sparkles } from "lucide-react";
 import { toast } from "sonner";
-import { useAuth } from "../context/AuthContext";
+import { Role, useAuth } from "../context/AuthContext";
 import { authApi } from "../api/authApi";
 import axios from "axios";
 
@@ -21,39 +21,92 @@ function LoginPage() {
   const { login, loginWithToken } = useAuth();
   const [form, setForm] = useState({ username: "", password: "", role: "USER" as "USER" | "PROVIDER" });
   const [loading, setLoading] = useState(false);
+  const DEMO_USERS = [
+      {
+        username: "user",
+        password: "user123",
+        role: "USER",
+      },
+      {
+        username: "provider",
+        password: "provider123",
+        role: "PROVIDER",
+      },
+    ];
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!form.username.trim() || !form.password) {
+
+    if (!form.username.trim() || !form.password.trim()) {
       toast.error("Please enter username and password");
       return;
     }
+
     setLoading(true);
+
     try {
-      // Try real backend first per PRD JWT flow.
-      const { token } = await authApi.login({ username: form.username.trim(), password: form.password });
+      const { token } = await authApi.login({
+        username: form.username.trim(),
+        password: form.password,
+      });
+
       const u = loginWithToken(token);
+
       if (!u) throw new Error("Invalid token");
+
       toast.success("Login successful");
-      navigate({ to: u.role === "PROVIDER" ? "/pro" : "/user" });
-   } catch (err) {
+
+      navigate({
+        to: u.role === "PROVIDER" ? "/pro" : "/user",
+      });
+
+    } catch (err) {
+
+      // Backend unavailable -> Demo Mode
+      if (axios.isAxiosError(err) && !err.response) {
+
+        const demo = DEMO_USERS.find(
+          (u) =>
+            u.username === form.username &&
+            u.password === form.password &&
+            u.role === form.role
+        );
+        if (!demo) {
+          toast.error(
+            "Invalid demo username or password"
+          );
+          toast.error(
+            "Use DEMO User -  user user123"
+          );
+          toast.error(
+            "Use DEMO Provider - provider provider123"
+          );
+          setLoading(false);
+          return;
+        }
+        const demoUser = login(
+          demo.username,
+          demo.role as Role
+        );
+
+        navigate({
+          to:
+            demoUser.role === "PROVIDER"
+              ? "/pro"
+              : "/user",
+        });
+
+        return;
+}
+
+      // Actual backend errors
       if (axios.isAxiosError(err)) {
         if (err.response?.status === 401) {
           toast.error("Invalid username or password");
-        } else if (err.response?.status === 403) {
-          toast.error("Access denied");
-        } else if (err.response?.status === 404) {
-          toast.error("Login service not found");
-        } else if (!err.response) {
-          toast.error("Cannot connect to the server. Please make sure the backend is running.");
         } else {
-          toast.error(err.response.data?.message || "Login failed");
+          toast.error("Login failed");
         }
-      } else {
-        toast.error("Something went wrong. Please try again.");
       }
-    } finally {
-      setLoading(false);
     }
   };
 

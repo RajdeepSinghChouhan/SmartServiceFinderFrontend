@@ -212,8 +212,8 @@ function Footer() {
             <div className="mt-3">
               <a href="#" className="ssf-social" aria-label="Facebook"><Facebook size={16} color="#fff" /></a>
               <a href="#" className="ssf-social" aria-label="Twitter"><Twitter size={16} color="#fff" /></a>
-              <a href="#" className="ssf-social" aria-label="Instagram"><Instagram size={16} color="#fff" /></a>
-              <a href="#" className="ssf-social" aria-label="LinkedIn"><Linkedin size={16} color="#fff" /></a>
+              <a href="https://www.instagram.com/rajdeep.chouhan.185/" className="ssf-social" aria-label="Instagram" target="_blank"><Instagram size={16} color="#fff" /></a> 
+              <a href="https://www.linkedin.com/in/rajdeep-chouhan-5ab5a2328/" className="ssf-social" aria-label="LinkedIn" target="_blank"><Linkedin size={16} color="#fff" /></a>
             </div>
           </div>
           <div className="col-lg-2 col-md-6 col-6">

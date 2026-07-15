@@ -5,7 +5,7 @@ import { storage } from "../utils/localStorage";
 
 const api = axios.create({
   baseURL: API_BASE_URL,
-  timeout: 15000,
+  timeout: 1000,//1second 
   headers: { "Content-Type": "application/json" },
 });
 
@@ -53,11 +53,12 @@ api.interceptors.response.use(
         toast.error("Resource not found");
       } else if (status && status >= 500) {
         toast.error("Server error. Please try again.");
-      } else if (!error.response) {
-        toast.error("Network error — backend unreachable");
-      } else {
-        toast.error(msg);
       }
+      // } else if (!error.response) {
+      //   toast.error("Network error — backend unreachable");
+      // } else {
+      //   toast.error(msg);
+      // }
     }
     return Promise.reject(error);
   }

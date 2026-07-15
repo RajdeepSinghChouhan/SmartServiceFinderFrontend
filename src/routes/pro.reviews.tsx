@@ -40,14 +40,7 @@ function ProviderReviews() {
         const providerId = await providerApi.getId(); // Get provider id
 
         const reviewData = await reviewApi.byProvider(providerId);
-        
-        const sortedReviews = [...reviewData].sort(
-          (a, b) =>
-            new Date(b.createdAt).getTime() -
-            new Date(a.createdAt).getTime()
-        );
-
-        setReviews(sortedReviews);
+        setReviews(reviewData);
 
         const avgRating =
           reviewData.length > 0
