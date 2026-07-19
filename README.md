@@ -85,18 +85,20 @@ src
 
 ## Screenshots
 
-Add screenshots inside:
-
-```text
-screenshots/
-```
-
-Example:
-
 ```md
-![Home](screenshots/home-page.png)
+![Home](screenshots/HomePage.png)
 
-![Dashboard](screenshots/user-dashboard.png)
+![Register Page](screenshots/RegisterPage.png)
+
+![Login Page](screenshots/LoginPage.png)
+
+![Users Dashboard](screenshots/UsersDashboard.png)
+
+![Services Page](screenshots/ServicesPage.png)
+
+![Booking Page](screenshots/BookingPage.png)
+
+![Providers Dashboard](screenshots/ProvidersDashboard.png)
 ```
 
 ---
